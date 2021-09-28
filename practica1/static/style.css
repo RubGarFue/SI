@@ -1,57 +1,104 @@
-.header {
-    background-color: rgb(255, 196, 108);
-    padding: 1%;
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    position: sticky;
-    left: 0;
-    top: 0;
-}
-
-.section {
-    background-color: rgb(236, 146, 104);
-    color: white;
-    position: fixed;
-    height: 100%;
-    left: 0;
-    font-size: 20px;
-}
-
 body {
     background-color: rgb(196, 196, 196);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px
 }
 
-.footer {
+
+/********** HEADER STYLE **********/
+
+header {
     background-color: rgb(255, 196, 108);
-    text-align: center;
-    font-size: 15px;
-    color: white;
     position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.name {
+    color: white;
+    margin: auto;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.header-sign-in {
+    float: right;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header button {
+    border-radius: 10px;
+}
+
+.shopping-cart-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 70%;
+    float: right;
+}
+
+
+
+/********** SIDEBAR STYLE **********/
+
+.sidebar {
+    background-color: rgb(236, 146, 104);
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+    font-size: 20px;
+    text-align: center;
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    padding-top: 100px;
 }
 nav ul li {
     padding: 1em;
     border-bottom: 1px solid #CCC;
 }
+
 nav ul li:last-child {
     border-bottom: 0;
 }
 
-a:link {
+.sidebar a {
     text-decoration: none;
-    padding: 8px 8px;
+    padding: 5px 5px;
     display: inline-block;
 }
-a:hover {
+
+.sidebar a:link, a:visited {
+    color: rgb(22, 40, 90);
+}
+
+.sidebar a:hover {
     background-color: rgb(255, 97, 23);
 }
+
+
+/********** FOOTER STYLE **********/
+
+footer {
+    background-color: rgb(255, 196, 108);
+    color: white;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    font-size: 15px;
+    text-align: center;
+}
+
+/********** CATALOG STYLE **********/
