@@ -6,28 +6,49 @@
     <link rel=StyleSheet href="../static/style.css" type="text/css">
 </head>
 <body>
-    <div class="header">
-        <h1>VIDEOCLUB</h1>
-    </div>
-    <div class="section">
+    <div class="sidebar">
         <nav>
             <ul>
-                <li><a href="#">Página principal</a></li>
-                <li><a href="#">Iniciar sesión</a></li>
+                <li><a href="index.html">Página principal</a></li>
+                <li><a href="login.html">Iniciar sesión</a></li>
                 <li><a href="#">Cesta de la compra</a></li>
                 <li><a href="#">Historial de compras</a></li>
             </ul>
         </nav>  
     </div>
-    <div class="search">
-        <form>
-            <input type="text" placeholder="Buscar película" name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+    <div class="main">
+        <div class="login-screen">
+            <form>
+                <h1>Iniciar sesión</h1>
+                <div>
+                    <input type="text" placeholder="Nombre de usuario" required="" id="username"/>
+                </div>
+                <div>
+                    <input type="password" placeholder="Contraseña" required="" id="password">
+                </div>
+                <div>
+                    <button type="button">Iniciar sesión</button>
+                    <p>¿No tiene cuenta? </p>
+                    <a href="#">Registrarse</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="footer">
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                <p>Hola, identifíquese</p>
+                <button type="button">Iniciar sesión</button>
+            </div>
+            <div class="shopping-cart">
+                <a href="#"><img class="shopping-cart-img" src="../img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
+    <footer>
         <p>Copyright © rubgarfue & lauradepazc</p>
-    </div>
+    </footer>
 </body>
 </html>
 
