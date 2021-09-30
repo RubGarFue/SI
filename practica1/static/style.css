@@ -144,6 +144,59 @@ input[type=text], input[type=password] {
 
 /********** CATALOG STYLE **********/
 
+/********** CATALOG STYLE **********/
+
+#search {
+    padding-top: 40px;
+    padding-left: 70px;
+}
+
+#search-box {
+    box-sizing: border-box;
+    border: 1px solid rgb(184, 182, 182);
+    border-radius: 4px;
+    font-size: 18px;
+    height: 30px;
+    width: 50%;
+    padding-left: 12px;
+}
+
+#filter {
+    font-size: 18px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid rgb(184, 182, 182);
+    margin-left: 20px;
+    padding-left: 5px;
+}
+
+#search button {
+    background: rgb(223, 223, 223);
+    font-size: 18px;
+    border: none;
+    height: 30px;
+    width: 80px;
+    border-radius: 4px;
+    margin-left: 20px;
+}
+
+#search button:hover {
+    background: rgb(184, 182, 182);
+}
+
+#catalog {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 50px;
+}
+
+.movie {
+    height: 280px;
+    width: 210px;
+    margin: 50px;
+}
+
+
 /********** FOOTER STYLE ***********/
 
 footer {
