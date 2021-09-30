@@ -9,7 +9,7 @@ body {
 header {
     background-color: rgb(255, 196, 108);
     position: fixed;
-    height: 100px;
+    height: 11%;
     width: 100%;
     top: 0;
     left: 0;
@@ -53,7 +53,7 @@ header button {
     background-color: rgb(236, 146, 104);
     position: fixed;
     height: 100%;
-    width: 200px;
+    width: 11%;
     left: 0;
     top: 0;
     font-size: 20px;
@@ -92,11 +92,10 @@ nav ul li:last-child {
 
 .main {
     position: absolute;
-    top: 100px;
-    left: 200px;
-    height: auto;
-    width: 100%;
-    background: green;
+    top: 11%;
+    left: 11%;
+    height: 84%;
+    width: 89%;
 }
 
 /***********LOGIN STYLE ************/
@@ -113,8 +112,8 @@ nav ul li:last-child {
     background: red;
     height: 100%;
     width: 100%;
-    /*background: url("../img/login.jpg");
-    background-size: cover;*/
+    background: url("../img/login.jpg");
+    background-size: cover;
 }
 
 /********** CATALOG STYLE **********/
@@ -126,6 +125,7 @@ footer {
     color: white;
     position: fixed;
     width: 100%;
+    height: 5%;
     left: 0;
     bottom: 0;
     font-size: 15px;
