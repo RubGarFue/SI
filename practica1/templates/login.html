@@ -1,23 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Videoclub</title>
+    <title>Login</title>
     <meta charset="utf-8">
     <link rel=StyleSheet href="../static/style.css" type="text/css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1 class="name">VIDEOCLUB</h1>
-            <div class="header-sign-in">
-                <p>Hola, identifíquese</p>
-                <button type="button">Iniciar sesión</button>
-            </div>
-            <div class="shopping-cart">
-                <a href="#"><img class="shopping-cart-img" src="../img/shopping-cart.jpeg" alt="Carrito"></a>
-            </div>
-        </div>
-    </header>
     <div class="sidebar">
         <nav>
             <ul>
@@ -30,22 +18,33 @@
     </div>
     <div class="main">
         <div class="login-screen">
-            <form>
+            <div class="form-table">
                 <h1>Iniciar sesión</h1>
-                <div>
-                    <input type="text" placeholder="Nombre de usuario" required="" id="username"/>
-                </div>
-                <div>
-                    <input type="password" placeholder="Contraseña" required="" id="password">
-                </div>
-                <div>
-                    <button type="button">Iniciar sesión</button>
-                    <p>¿No tiene cuenta? </p>
-                    <a href="#">Registrarse</a>
-                </div>
-            </form>
+
+                <label for="uname"><b>Nombre de usuario</b></label>
+                <input type="text" placeholder="Introduzca un nombre de usuario" required="">
+                
+                <label for="psword"><b>Contraseña</b></label>
+                <input type="password" placeholder="Introduzca una contraseña" required="">
+                
+                <button type="submit" id="submit-button"><b>Iniciar sesión</b></button>
+                <p>¿No tiene cuenta?</p>
+                <a href="#" id="reg-login">Registrarse</a>
+            </div>
         </div>
     </div>
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                <p>Hola, identifíquese</p>
+                <button type="button">Iniciar sesión</button>
+            </div>
+            <div class="shopping-cart">
+                <a href="#"><img class="shopping-cart-img" src="../img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
     <footer>
         <p>Copyright © rubgarfue & lauradepazc</p>
     </footer>

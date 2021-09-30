@@ -52,10 +52,10 @@ header button {
 .sidebar {
     background-color: rgb(236, 146, 104);
     position: fixed;
-    height: 100%;
+    height: 84%;
     width: 11%;
     left: 0;
-    top: 0;
+    top: 11%;
     font-size: 20px;
     text-align: center;
 }
@@ -63,7 +63,6 @@ header button {
 nav ul {
     list-style-type: none;
     padding: 0;
-    padding-top: 100px;
 }
 nav ul li {
     padding: 1em;
@@ -102,18 +101,44 @@ nav ul li:last-child {
 
 .login-screen {
     position: relative;
-    /*top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);*/
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: red;
     height: 100%;
     width: 100%;
     background: url("../img/login.jpg");
     background-size: cover;
+}
+
+.form-table {
+    position: relative;
+    display: table;
+    border-style: outset;
+    top: 25%;
+    left: 35%;
+    width: 30%;
+    text-align: center;
+    background-color: rgb(255, 196, 108);
+}
+
+input[type=text], input[type=password] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#submit-button {
+    background-color: #ff8411;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+}
+
+#submit-button:hover {
+    opacity: 0.8;
 }
 
 /********** CATALOG STYLE **********/
