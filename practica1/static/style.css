@@ -116,6 +116,7 @@ nav ul li:last-child {
     width: 30%;
     text-align: center;
     background-color: rgb(255, 196, 108);
+    padding: 20px 20px;
 }
 
 input[type=text], input[type=password] {
