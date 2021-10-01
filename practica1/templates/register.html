@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Register</title>
+    <meta charset="utf-8">
+    <link rel=StyleSheet href="../static/style.css" type="text/css">
+</head>
+<body>
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="index.html">Página principal</a></li>
+                <li><a href="login.html">Iniciar sesión</a></li>
+                <li><a href="#">Cesta de la compra</a></li>
+                <li><a href="#">Historial de compras</a></li>
+            </ul>
+        </nav>  
+    </div>
+    <div class="main">
+        <div class="login-screen">
+            <div class="form-register-table">
+                <h1>Registrarse</h1>
+                <hr>
+
+                <table id="in-register-table">
+                    <tr>
+                        <th><label for="uname"><b>Nombre de usuario:</b></label></th>
+                        <th><label for="email"><b>Correo electrónico:</b></label></th>
+                    </tr>
+                    <tr>
+                        <th><input type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
+                        <th><input type="email" placeholder="Introduzca un correo electrónico" required=""></th>
+                    </tr>
+                    <tr>
+                        <th><label for="psword"><b>Contraseña:</b></label></th>
+                        <th><label for="credcard"><b>Tarjeta de crédito:</b></label></th>
+                    </tr>
+                    <tr>
+                        <th><input type="password" placeholder="Introduzca una contraseña" required=""></th>
+                        <th><input type="text" placeholder="Introduzca una tarjeta de crédito" maxlength="16" required=""></th>
+                    </tr>
+                    <tr>
+                        <th><label for="pswordc"><b>Confirmación de contraseña:</b></label></th>
+                        <th><label for="dir"><b>Introduzca una dirección:</b></label></th>
+                    </tr>
+                    <tr>
+                        <th><input type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
+                        <th><input type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
+                    </tr>
+                </table>
+                
+                <button type="submit" class="submit-button"><b>Registrarse</b></button>
+                <p>¿Ya tiene cuenta?</p>
+                <a href="login.html">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                <p>Hola, identifíquese</p>
+                <button type="button">Iniciar sesión</button>
+            </div>
+            <div class="shopping-cart">
+                <a href="#"><img class="shopping-cart-img" src="../img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
+    <footer>
+        <p>Copyright © rubgarfue & lauradepazc</p>
+    </footer>
+</body>
+</html>
+
