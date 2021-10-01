@@ -161,7 +161,6 @@ input[type=text], input[type=password], input[type=email] {
     width: 100%;
 }
 
-/********** CATALOG STYLE **********/
 
 /********** CATALOG STYLE **********/
 
@@ -203,18 +202,31 @@ input[type=text], input[type=password], input[type=email] {
     background: rgb(184, 182, 182);
 }
 
+#catalog-title {
+    font-size: 30px;
+    color:rgb(22, 40, 90);
+    margin-left: 70px;
+}
+
 #catalog {
     display: flex;
     flex-wrap: wrap;
-    margin: 50px;
+    margin: 0px 70px;
 }
 
 .movie {
     height: 280px;
     width: 210px;
-    margin: 50px;
+    margin-right: 60px;
+    margin-bottom: 60px;
 }
 
+/******** MOVIE DETAIL STYLE *********/
+
+#movie-img {
+    height: 280px;
+    width: 210px;
+}
 
 /********** FOOTER STYLE ***********/
 
