@@ -21,14 +21,37 @@
     <div class="main">
         <div id="movie-screen">
             <p id="movie-title">Pulp fiction</p>
-            <p id="movie-director">John Smith</p>
-            <p id="movie-year">1999</p>
-            <img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction">
-            <p id="movie-summary">Bla bla bla</p>
-            <p id="movie-genre">Random</p>
-            <p id="movie-cast">Actor1, actor2...</p>
-            <p id="movie-price">10.99$</p>
-            <button type="button">Añadir al carrito</button>
+            <div id="movie-info">
+                <img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction">
+                <table id="movie-table">
+                    <tr>
+                        <!--<td rowspan="6"><img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>-->
+                        <td class="movie-info-q">Director:</td>
+                        <td class="movie-info-a">Quentin Tarantino</td>
+                    </tr>
+                    <tr>
+                        <td class="movie-info-q">Año:</td>
+                        <td class="movie-info-a">1994</td>
+                    </tr>
+                    <tr>
+                        <td class="movie-info-q">Género:</td>
+                        <td class="movie-info-a">Thriller, crimen</td>
+                    </tr>
+                    <tr>
+                        <td class="movie-info-q">Sinopsis:</td>
+                        <td class="movie-info-a">Jules y Vincent, dos asesinos a sueldo con no demasiadas luces, trabajan para el gángster Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su atractiva mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse "manos a la obra". Su misión: recuperar un misterioso maletín</td>
+                    </tr>
+                    <tr>
+                        <td class="movie-info-q">Reparto:</td>
+                        <td class="movie-info-a">John Travolta, Samuel L. Jackson, Uma Thurman, Bruce Willis</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="movie-buy">
+                <p>Alquilar película por solo: <b>10.99€</b></p>
+                <button type="button">Añadir al carrito</button>
+                <input type="number" value="1" min="1" step="1">
+            </div>
 
         </div>
     </div>
