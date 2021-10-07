@@ -39,6 +39,10 @@ header button {
     border-radius: 10px;
 }
 
+header button a {
+    text-decoration: none;
+}
+
 .shopping-cart-img {
     width: 55px;
     height: 55px;
@@ -388,6 +392,74 @@ input[type=text], input[type=password], input[type=email] {
     padding-top: 30px;
     text-align: center;
 }
+
+
+/************ HISTORY *************/
+
+#history-title {
+    font-size: 40px;
+    color:rgb(22, 40, 90);
+    text-align: center;
+    padding: 15px;
+}
+
+.history-purchase {
+    width: 100%;
+    text-align: center;
+}
+
+.purchase-date {
+    font-size: 22px;
+    display: inline-block;
+    background-color: rgb(199, 184, 169);
+    padding: 10px 18%;
+    border-radius: 4px;
+}
+
+.history-purchase table {
+    position: relative;
+    left: 30%;
+}
+
+.history-purchase table tr td{
+    border: 1px solid transparent;
+}
+
+/*.history-purchase table tr:first-child td:first-child{
+    width: 100px;
+}*/
+
+.history-purchase table tr:first-child td:nth-child(2), .history-purchase table tr:not(:first-child) td:first-child{
+    width: 500px;
+    border-left-width: 40px;
+    text-align: left;
+}
+
+.history-purchase table tr:first-child td:nth-child(2){
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: rgb(22, 40, 90);
+}
+
+/*.history-purchase table td:nth-child(1){
+    border-left-width: 20px;
+}*/
+
+.purchase-total {
+    font-size: 18px;
+    display: inline-block;
+    background-color: rgb(253, 242, 230);
+    border-radius: 4px;
+    padding: 20px 40px;
+}
+
+
+
+.purchase-movie-img {
+    width: 170px;
+}
+
 
 /********** FOOTER STYLE ***********/
 

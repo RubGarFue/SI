@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Movie</title>
+    <meta charset="utf-8">
+    <link rel=StyleSheet href="../static/style.css" type="text/css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="index.html">Página principal</a></li>
+                <li><a href="login.html">Iniciar sesión</a></li>
+                <li><a href="shopping-cart.html">Cesta de la compra</a></li>
+                <li><a href="history.html">Historial de compras</a></li>
+            </ul>
+        </nav>  
+    </div>
+
+    <div class="main">
+        <p id="history-title"><b>Historial de compras</b></p>
+
+        <!-- Esto se repite para todas las compras -->
+        <div class="history-purchase">
+            <p class="purchase-date">Compra realizada el 10/09/2021</p>
+            <!-- Una table por cada articulo -->
+            <table>
+                <tr>
+                    <td rowspan="4"><img class="purchase-movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
+                    <td>Pulp fiction</td>
+                </tr>
+                <tr>
+                    <td>Precio por unidad: <b>10,99$</b></td>
+                </tr>
+                <tr>
+                    <td>3 unidades</td>
+                </tr>
+                <tr>
+                    <td>Total: <b>32,97$</b></td>
+                </tr>
+            </table>
+            <br>
+            <table>
+                <tr>
+                    <td rowspan="4"><img class="purchase-movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
+                    <td>Pulp fiction pero en realiddad es una pelicula con un nombre mazo largo :)</td>
+                </tr>
+                <tr>
+                    <td>Precio por unidad: <b>6,99$</b></td>
+                </tr>
+                <tr>
+                    <td>1 unidad</td>
+                </tr>
+                <tr>
+                    <td>Total: <b>6,99$</b></td>
+                </tr>
+            </table>
+            <br>
+            <p class="purchase-total">Total: <b>50,00$</b></p>
+        </div>
+
+        <hr width="70%">
+
+        <div class="history-purchase">
+            <p class="purchase-date">Compra realizada el 08/01/2021</p>
+            <!-- Una table por cada articulo -->
+            <table>
+                <tr>
+                    <td rowspan="4"><img class="purchase-movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
+                    <td>Pulp fiction</td>
+                </tr>
+                <tr>
+                    <td>Precio por unidad: <b>6,99$</b></td>
+                </tr>
+                <tr>
+                    <td>1 unidad</td>
+                </tr>
+                <tr>
+                    <td>Total: <b>3,99$</b></td>
+                </tr>
+            </table>
+            <br>
+            <p class="purchase-total">Total: <b>4,00$</b></p>
+
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                <p>Hola, identifíquese</p>
+                <button type="button"><a href="login.html"><b>Iniciar sesión</b></a></button>
+            </div>
+            <div class="shopping-cart">
+                <a href="shopping-cart.html"><img class="shopping-cart-img" src="../img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
+
+    <footer>
+        <p>Copyright © rubgarfue & lauradepazc</p>
+    </footer>
+</body>
+</html>
+
