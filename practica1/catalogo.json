@@ -1,0 +1,56 @@
+{
+    "peliculas": [
+        {
+            "id": 1,
+            "titulo": "Pulp fiction",
+            "poster": "img/movies/pulp-fiction.jpeg",
+            "director": "Quentin Tarantino",
+            "precio": 10.99,
+            "categoria": "Thriller, crimen",
+            "anno": 1994,
+            "actores": [
+                {
+                    "nombre": "John Travolta",
+                    "personaje": "-",
+                    "foto": ""
+                },
+                {
+                    "nombre": "Samuel L. Jackson",
+                    "personaje": "-",
+                    "foto": ""
+                },
+                {
+                    "nombre": "Uma Thurman",
+                    "personaje": "-",
+                    "foto": ""
+                },
+                {
+                    "nombre": "Bruce Willis",
+                    "personaje": "-",
+                    "foto": ""
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "titulo": "Barbie: la princesa y la costurera",
+            "poster": "img/movies/barbie.jpeg",
+            "director": "William Lau",
+            "precio": 6.99,
+            "categoria": "Animación",
+            "anno": 2004,
+            "actores": [
+                {
+                    "nombre": "Kelly Sheridan",
+                    "personaje": "-",
+                    "foto": ""
+                },
+                {
+                    "nombre": "Mark Hildreyh",
+                    "personaje": "-",
+                    "foto": ""
+                }
+            ]
+        }
+    ]
+}
