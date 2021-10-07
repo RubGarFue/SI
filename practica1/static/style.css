@@ -3,6 +3,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+hr {
+    width: 70%;
+}
 
 /********** HEADER STYLE **********/
 
@@ -97,17 +100,19 @@ nav ul li:last-child {
     position: absolute;
     top: 11%;
     left: 11%;
-    height: 84%;
     width: 89%;
     background-color: rgb(250, 231, 210);
+    padding-bottom: 5%;
 }
 
 /***********LOGIN STYLE ************/
 
 .login-screen {
-    position: relative;
-    height: 100%;
-    width: 100%;
+    position: fixed;
+    top: 11%;
+    left: 11%;
+    width: 89%;
+    height: 84%;
     background: url("../img/login.jpg");
     background-size: cover;
     background-repeat: repeat;
@@ -378,8 +383,8 @@ input[type=text], input[type=password], input[type=email] {
 
 #shopping-process-table {
     position: relative;
-    width: 30%;
-    left: 15%;
+    width: 40%;
+    left: 30%;
     padding: 15px;
     background-color: white;
 }
