@@ -36,7 +36,21 @@
                         <th><label><b>Tarjeta de crédito:</b></label></th>
                     </tr>
                     <tr>
-                        <th><input type="password" placeholder="Introduzca una contraseña" required=""></th>
+                        <th>
+                            <input id="password" type="password" placeholder="Introduzca una contraseña" required="">
+                            
+                            <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+                            <script type="text/javascript" src="../js/passtrength.js"></script>
+                            <script type="text/javascript">
+                                $(document).ready(function ($) {
+                                $('#password').passtrength({
+                                    minChars: 4,
+                                    passwordToggle: true,
+                                    tooltip: true
+                                  });
+                                });
+                            </script>
+                        </th>
                         <th><input type="text" placeholder="Introduzca una tarjeta de crédito" maxlength="16" required=""></th>
                     </tr>
                     <tr>
