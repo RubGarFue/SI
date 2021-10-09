@@ -3,7 +3,7 @@
         {
             "id": 1,
             "titulo": "Pulp fiction",
-            "poster": "img/movies/pulp-fiction.jpeg",
+            "poster": "static/img/movies/pulp-fiction.jpeg",
             "director": "Quentin Tarantino",
             "precio": 10.99,
             "categoria": "Thriller, crimen",
@@ -34,7 +34,7 @@
         {
             "id": 2,
             "titulo": "Barbie: la princesa y la costurera",
-            "poster": "img/movies/barbie.jpeg",
+            "poster": "static/img/movies/barbie.jpeg",
             "director": "William Lau",
             "precio": 6.99,
             "categoria": "Animación",
