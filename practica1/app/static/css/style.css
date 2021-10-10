@@ -102,6 +102,7 @@ nav ul li:last-child {
     top: 11%;
     left: 11%;
     width: 89%;
+    min-height: 79%;
     background-color: rgb(250, 231, 210);
     padding-bottom: 5%;
 }

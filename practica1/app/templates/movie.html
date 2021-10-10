@@ -1,77 +1,45 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Movie</title>
-    <meta charset="utf-8">
-    <link rel=StyleSheet href="../static/css/style.css" type="text/css">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <div class="sidebar">
-        <nav>
-            <ul>
-                <li><a href="index.html">Página principal</a></li>
-                <li><a href="login.html">Iniciar sesión</a></li>
-                <li><a href="shopping-cart.html">Cesta de la compra</a></li>
-                <li><a href="history.html">Historial de compras</a></li>
-            </ul>
-        </nav>  
-    </div>
+{% block title %}
+    {{ title }}
+{% endblock %}
 
-    <div class="main">
-        <div id="movie-screen">
-            <p id="movie-title">Pulp fiction</p>
-            <div id="movie-info">
-                <img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction">
-                <table id="movie-table">
-                    <tr>
-                        <!--<td rowspan="6"><img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>-->
-                        <td class="movie-info-q"><b>Director:</b></td>
-                        <td class="movie-info-a">Quentin Tarantino</td>
-                    </tr>
-                    <tr>
-                        <td class="movie-info-q"><b>Año:</b></td>
-                        <td class="movie-info-a">1994</td>
-                    </tr>
-                    <tr>
-                        <td class="movie-info-q"><b>Género:</b></td>
-                        <td class="movie-info-a">Thriller, crimen</td>
-                    </tr>
-                    <tr>
-                        <td class="movie-info-q"><b>Sinopsis:</b></td>
-                        <td class="movie-info-a">Jules y Vincent, dos asesinos a sueldo con no demasiadas luces, trabajan para el gángster Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su atractiva mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse "manos a la obra". Su misión: recuperar un misterioso maletín</td>
-                    </tr>
-                    <tr>
-                        <td class="movie-info-q"><b>Reparto:</b></td>
-                        <td class="movie-info-a">John Travolta, Samuel L. Jackson, Uma Thurman, Bruce Willis</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="movie-buy">
-                <p>Alquilar película por solo: <b>10.99€</b></p>
-                <button type="button">Añadir al carrito</button>
-                <input type="number" value="1" min="1" step="1">
-            </div>
+{% block content %}
 
+    <div id="movie-screen">
+        <p id="movie-title">Pulp fiction</p>
+        <div id="movie-info">
+            <img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction">
+            <table id="movie-table">
+                <tr>
+                    <!--<td rowspan="6"><img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>-->
+                    <td class="movie-info-q"><b>Director:</b></td>
+                    <td class="movie-info-a">Quentin Tarantino</td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q"><b>Año:</b></td>
+                    <td class="movie-info-a">1994</td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q"><b>Género:</b></td>
+                    <td class="movie-info-a">Thriller, crimen</td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q"><b>Sinopsis:</b></td>
+                    <td class="movie-info-a">Jules y Vincent, dos asesinos a sueldo con no demasiadas luces, trabajan para el gángster Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su atractiva mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse "manos a la obra". Su misión: recuperar un misterioso maletín</td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q"><b>Reparto:</b></td>
+                    <td class="movie-info-a">John Travolta, Samuel L. Jackson, Uma Thurman, Bruce Willis</td>
+                </tr>
+            </table>
+        </div>
+        <div class="movie-buy">
+            <p>Alquilar película por solo: <b>10.99€</b></p>
+            <button type="button">Añadir al carrito</button>
+            <input type="number" value="1" min="1" step="1">
         </div>
     </div>
 
-    <header>
-        <div class="header-content">
-            <h1 class="name">VIDEOCLUB</h1>
-            <div class="header-sign-in">
-                <p>Hola, identifíquese</p>
-                <button type="button"><a href="login.html"><b>Iniciar sesión</b></a></button>
-            </div>
-            <div class="shopping-cart">
-                <a href="shopping-cart.html"><img class="shopping-cart-img" src="../static/img/shopping-cart.jpeg" alt="Carrito"></a>
-            </div>
-        </div>
-    </header>
-
-    <footer>
-        <p>Copyright © rubgarfue & lauradepazc</p>
-    </footer>
-</body>
-</html>
+{% endblock %}
 

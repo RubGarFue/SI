@@ -26,7 +26,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('regiser.html', title="Videoclub - Registro")
+    return render_template('register.html', title="Videoclub - Registro")
 
 
 @app.route('/movie', methods=['GET', 'POST'])

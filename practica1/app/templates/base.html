@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{% block title %} {% endblock %}</title>
+    <meta charset="utf-8">
+    <!--<link rel=StyleSheet href="../static/style.css" type="text/css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Página principal</a></li>
+                <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+                <li><a href="{{ url_for('shopping_cart') }}">Cesta de la compra</a></li>
+                <li><a href="{{ url_for('history') }}">Historial de compras</a></li>
+            </ul>
+        </nav>  
+    </div>
+
+    <div class="main">
+        {% block content %} {% endblock %}
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                <p>Hola, identifíquese</p>
+                <button type="button"><a href="{{ url_for('login') }}"><b>Iniciar sesión</b></a></button>
+            </div>
+            <div class="shopping-cart">
+                <a href="{{ url_for('shopping_cart') }}"><img class="shopping-cart-img" src="../static/img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
+
+    <footer>
+        <p>Copyright © rubgarfue & lauradepazc</p>
+    </footer>
+</body>
+</html>
+

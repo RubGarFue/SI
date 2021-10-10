@@ -1,54 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Login</title>
-    <meta charset="utf-8">
-    <link rel=StyleSheet href="../static/css/style.css" type="text/css">
-</head>
-<body>
-    <div class="sidebar">
-        <nav>
-            <ul>
-                <li><a href="index.html">Página principal</a></li>
-                <li><a href="login.html">Iniciar sesión</a></li>
-                <li><a href="shopping-cart.html">Cesta de la compra</a></li>
-                <li><a href="history.html">Historial de compras</a></li>
-            </ul>
-        </nav>  
-    </div>
-    <div class="main">
-        <div class="login-screen">
-            <div class="form-login-table">
-                <h1>Iniciar sesión</h1>
-                <hr>
+{% extends "base.html" %}
 
-                <label><b>Nombre de usuario:</b></label>
-                <input type="text" placeholder="Introduzca un nombre de usuario" required="">
-                
-                <label><b>Contraseña:</b></label>
-                <input type="password" placeholder="Introduzca una contraseña" required="">
-                
-                <button type="submit" class="submit-button"><b>Iniciar sesión</b></button>
-                <p>¿No tiene cuenta?</p>
-                <a href="register.html">Registrarse</a>
-            </div>
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="login-screen">
+        <div class="form-login-table">
+            <h1>Iniciar sesión</h1>
+            <hr>
+
+            <label><b>Nombre de usuario:</b></label>
+            <input type="text" placeholder="Introduzca un nombre de usuario" required="">
+            
+            <label><b>Contraseña:</b></label>
+            <input type="password" placeholder="Introduzca una contraseña" required="">
+            
+            <button type="submit" class="submit-button"><b>Iniciar sesión</b></button>
+            <p>¿No tiene cuenta?</p>
+            <a href="{{ url_for('register') }}">Registrarse</a>
         </div>
     </div>
-    <header>
-        <div class="header-content">
-            <h1 class="name">VIDEOCLUB</h1>
-            <div class="header-sign-in">
-                <p>Hola, identifíquese</p>
-                <button type="button"><a href="login.html"><b>Iniciar sesión</b></a></button>
-            </div>
-            <div class="shopping-cart">
-                <a href="shopping-cart.html"><img class="shopping-cart-img" src="../static/img/shopping-cart.jpeg" alt="Carrito"></a>
-            </div>
-        </div>
-    </header>
-    <footer>
-        <p>Copyright © rubgarfue & lauradepazc</p>
-    </footer>
-</body>
-</html>
 
+{% endblock %}
