@@ -7,35 +7,35 @@
 {% block content %}
 
     <div id="movie-screen">
-        <p id="movie-title">Pulp fiction</p>
+        <p id="movie-title">{{ movie.title }}</p>
         <div id="movie-info">
-            <img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction">
+            <img id="movie-img" src="../{{ movie.poster }}" alt="{{ movie.title }}" title="{{ movie.title }}">
             <table id="movie-table">
                 <tr>
                     <!--<td rowspan="6"><img id="movie-img" src="../img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>-->
                     <td class="movie-info-q"><b>Director:</b></td>
-                    <td class="movie-info-a">Quentin Tarantino</td>
+                    <td class="movie-info-a">{{ movie.director }}</td>
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Año:</b></td>
-                    <td class="movie-info-a">1994</td>
+                    <td class="movie-info-a">{{ movie.anno }}</td>
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Género:</b></td>
-                    <td class="movie-info-a">Thriller, crimen</td>
+                    <td class="movie-info-a">{{ movie.categoria }}</td>
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Sinopsis:</b></td>
-                    <td class="movie-info-a">Jules y Vincent, dos asesinos a sueldo con no demasiadas luces, trabajan para el gángster Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su atractiva mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse "manos a la obra". Su misión: recuperar un misterioso maletín</td>
+                    <td class="movie-info-a">{{ movie.sinopsis }}</td>
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Reparto:</b></td>
-                    <td class="movie-info-a">John Travolta, Samuel L. Jackson, Uma Thurman, Bruce Willis</td>
+                    <td class="movie-info-a">{% for actor in movie.actores %}- {{actor}}<br>{% endfor %}</td>
                 </tr>
             </table>
         </div>
         <div class="movie-buy">
-            <p>Alquilar película por solo: <b>10.99€</b></p>
+            <p>Alquilar película por solo: <b>{{ movie.precio }}€</b></p>
             <button type="button">Añadir al carrito</button>
             <input type="number" value="1" min="1" step="1">
         </div>

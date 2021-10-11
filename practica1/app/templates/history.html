@@ -8,10 +8,33 @@
 
     <p id="history-title"><b>Historial de compras</b></p>
 
-    <!-- Esto se repite para todas las compras -->
     <div class="history-purchase">
+        <!--
+        {% for compra in compras %}
+            <p class="purchase-date">Compra realizada el {{ compra.fecha }}</p>
+            {% for item in compra.articulos %}
+                <table>
+                    <tr>
+                        <td rowspan="4"><img class="purchase-movie-img" src="../{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></td>
+                        <td>{{ item.titulo }}</td>
+                    </tr>
+                    <tr>
+                        <td>Precio por unidad: <b>{{ item.precio_u }}€</b></td>
+                    </tr>
+                    <tr>
+                        <td>{{ item.cantidad }} unidades</td>
+                    </tr>
+                    <tr>
+                        <td>Total: <b>--- calcular total --- €</b></td>
+                    </tr>
+                </table>
+                <br>
+            {% endfor %}
+            <p class="purchase-total">Total: <b>--- calcular total --- €</b></p>
+            <hr>
+        {% endfor %}
+            -->
         <p class="purchase-date">Compra realizada el 10/09/2021</p>
-        <!-- Una table por cada articulo -->
         <table>
             <tr>
                 <td rowspan="4"><img class="purchase-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
@@ -51,7 +74,6 @@
 
     <div class="history-purchase">
         <p class="purchase-date">Compra realizada el 08/01/2021</p>
-        <!-- Una table por cada articulo -->
         <table>
             <tr>
                 <td rowspan="4"><img class="purchase-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>

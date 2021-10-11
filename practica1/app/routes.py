@@ -24,14 +24,24 @@ def login():
     return render_template('login.html', title="Videoclub - Iniciar sesión")
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('usuario', None)
+    return redirect(url_for('index'))
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     return render_template('register.html', title="Videoclub - Registro")
 
 
-@app.route('/movie', methods=['GET', 'POST'])
-def movie():
-    return render_template('movie.html', title="Videoclub - Titulo")
+@app.route('/movie/<movie_id>', methods=['GET', 'POST'])
+def movie(movie_id):
+    catalogue_data = open(os.path.join(
+        app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
+    catalogue = json.loads(catalogue_data)
+    peli = catalogue["peliculas"][int(movie_id)]
+    return render_template('movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 
 
 @app.route('/history', methods=['GET', 'POST'])
@@ -42,6 +52,7 @@ def history():
 @app.route('/shopping-cart', methods=['GET', 'POST'])
 def shopping_cart():
     return render_template('shopping-cart.html', title="Videoclub - Carrito de la compra")
+
 
 
 '''

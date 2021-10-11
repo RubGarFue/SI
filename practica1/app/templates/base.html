@@ -12,7 +12,11 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('index') }}">Página principal</a></li>
+                {% if not session['usuario'] %}
                 <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+                {% else %}
+                <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                {% endif %}
                 <li><a href="{{ url_for('shopping_cart') }}">Cesta de la compra</a></li>
                 <li><a href="{{ url_for('history') }}">Historial de compras</a></li>
             </ul>
@@ -27,8 +31,13 @@
         <div class="header-content">
             <h1 class="name">VIDEOCLUB</h1>
             <div class="header-sign-in">
+                {% if not session['usuario'] %}
                 <p>Hola, identifíquese</p>
                 <button type="button"><a href="{{ url_for('login') }}"><b>Iniciar sesión</b></a></button>
+                {% else %}
+                <p>Hola, {{ session['usuario'] }}</p>
+                <button type="button"><a href="{{ url_for('logout') }}"><b>Cerrar sesión</b></a></button>
+                {% endif %}
             </div>
             <div class="shopping-cart">
                 <a href="{{ url_for('shopping_cart') }}"><img class="shopping-cart-img" src="../static/img/shopping-cart.jpeg" alt="Carrito"></a>

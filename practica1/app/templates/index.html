@@ -20,7 +20,7 @@
     <p id="catalog-title"><b>Cartelera actual</b></p> <!-- se cambia en funcion de la busqueda -->
     <div id="catalog">
         {% for item in movies %}
-        <a href="#"><img class="movie" src="{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></a>
+        <a href="{{ url_for('movie', movie_id=item.id) }}"><img class="movie" src="{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></a>
         {% endfor %}
     </div>
     
