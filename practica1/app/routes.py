@@ -10,14 +10,39 @@ import sys
 import random
 
 
-@app.route('/')
-@app.route('/index')
+#@app.route('/')
+@app.route('/index', methods=['GET','POST'])
 def index():
     print(url_for('static', filename='css/style.css'), file=sys.stderr)
+    
     catalogue_data = open(os.path.join(
         app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
-    return render_template('index.html', title="VIDEOCLUB", movies=catalogue['peliculas'])
+
+    # CARGAR CATEGORIAS DISPONIBLES
+    genres = set()
+    for mov in catalogue['peliculas']:
+        genres.update(mov['categoria'])
+
+    # BUSCADOR
+    if request.method == 'POST':
+        if request.form['search-button'] == 'search':
+            # search bar
+            text = request.form['search-text']
+            catalog_search = [mov for mov in catalogue['peliculas'] if text.lower() in mov['titulo'].lower()]
+            
+            # filter genre
+            genre = request.form.get('filter')
+            catalog_search_filter = [mov for mov in catalog_search if genre in mov['categoria']]
+            
+            # update subtitle
+            subtitle = "Resultados para '" + text  + "'" 
+            if genre:
+                subtitle += " de la categoría " + genre.lower() 
+
+            return render_template('index.html', title="VIDEOCLUB", subtitle=subtitle, genres=genres, movies=catalog_search_filter)
+
+    return render_template('index.html', title="VIDEOCLUB", subtitle="Cartelera actual", genres=genres, movies=catalogue['peliculas'])
 
 
 @app.route('/login', methods=['GET'])

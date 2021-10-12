@@ -6,7 +6,7 @@
             "poster": "static/img/movies/pulp-fiction.jpeg",
             "director": "Quentin Tarantino",
             "precio": 10.99,
-            "categoria": "Thriller, crimen",
+            "categoria": ["Thriller", "Crimen"],
             "anno": 1994,
             "sinopsis": "Jules y Vincent, dos asesinos a sueldo con no demasiadas luces, trabajan para el gángster Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su atractiva mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse \"manos a la obra\". Su misión: recuperar un misterioso maletín",
             "actores": ["John Travolta", "Samuel L. Jackson", "Uma Thurman", "Bruce Willis"]
@@ -17,7 +17,7 @@
             "poster": "static/img/movies/barbie.jpeg",
             "director": "William Lau",
             "precio": 6.99,
-            "categoria": "Animación",
+            "categoria": ["Animación"],
             "anno": 2004,
             "sinopsis": "Largometraje protagonizado por la conocida muñeca Barbie. En esta ocasión la película se basa en un clásico de Mark Twain, en la que se muestra a dos chicas totalmente opuestas pero con un gran parecido físico. Por una parte, la princesa Anneliese y por otra, una chica pobre, Erika, obligada a pagar la deuda de sus padres cosiendo. Un día ambas chicas se encuentran y descubren que tienen más en común de lo que creen. Tras esto, la princesa es capturada por el malvado Preminger y será la costurera quien tendrá que rescatarla con la ayuda de Julian, gran amigo de Anneliese. En esta historia llena de números musicales no faltarán motivos como el amor y la amistad.", 
             "actores": ["Kelly Sheridan", "Mark Hildreyh"]
