@@ -3,9 +3,11 @@
 
 from app import app
 from flask import render_template, request, url_for, redirect, session
+from hashlib import blake2b
 import json
 import os
 import sys
+import random
 
 
 @app.route('/')
@@ -18,10 +20,34 @@ def index():
     return render_template('index.html', title="VIDEOCLUB", movies=catalogue['peliculas'])
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    # validar username y password
+@app.route('/login', methods=['GET'])
+def show_login():
     return render_template('login.html', title="Videoclub - Iniciar sesión")
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+
+    if os.path.isdir('usuarios/' + username):
+        hash = blake2b()
+        hash.update(password.encode('utf8'))
+        password = '{0}'.format(hash.hexadigest())
+
+        file = open('usuarios/' + username + '/data.dat', 'r')
+        password_check = file.readlines()[1]
+        file.close()
+
+        if password != password_check:
+            return render_template('login.html', title="Videoclub - Iniciar sesión")
+        
+        session['usuario'] = username
+        session.modified = True
+
+        return redirect(url_for('index'))
+    
+    else:
+        return render_template('login.html', title="Videoclub - Iniciar sesión")
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -30,9 +56,34 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/register', methods=['GET'])
+def show_register():
     return render_template('register.html', title="Videoclub - Registro")
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+    password_confirm = request.form['password_confirm']
+    email = request.form['email']
+    credit_card = request.form['credit_card']
+    direction = request.form['direction']
+
+    os.mkdir('usuarios/' + username)
+
+    file = open('usuarios/' + username + '/data.dat', 'w')
+    file.write(username + '\n')
+
+    hash = blake2b()
+    hash.update(password.encode('utf8'))
+    file.write('{0}'.format(hash.hexadigest()) + '\n')
+
+    file.write(email + '\n' + credit_card + '\n')
+    file.write(str(random.randint(0, 100)))
+
+    file.close()
+
+    return render_template('login.html', title="Videoclub - Iniciar sesión")
 
 
 @app.route('/movie/<movie_id>', methods=['GET', 'POST'])

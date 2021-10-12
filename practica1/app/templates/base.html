@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="{{ url_for('index') }}">Página principal</a></li>
                 {% if not session['usuario'] %}
-                <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+                <li><a href="{{ url_for('show_login') }}">Iniciar sesión</a></li>
                 {% else %}
                 <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
                 {% endif %}
@@ -33,10 +33,10 @@
             <div class="header-sign-in">
                 {% if not session['usuario'] %}
                 <p>Hola, identifíquese</p>
-                <button type="button"><a href="{{ url_for('login') }}"><b>Iniciar sesión</b></a></button>
+                <button id="login-button" type="button"><a href="{{ url_for('show_login') }}"><b>Iniciar sesión</b></a></button>
                 {% else %}
                 <p>Hola, {{ session['usuario'] }}</p>
-                <button type="button"><a href="{{ url_for('logout') }}"><b>Cerrar sesión</b></a></button>
+                <button id="logout-button" type="button"><a href="{{ url_for('logout') }}"><b>Cerrar sesión</b></a></button>
                 {% endif %}
             </div>
             <div class="shopping-cart">

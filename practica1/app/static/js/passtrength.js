@@ -5,10 +5,10 @@
         minChars: 8,
         passwordToggle: true,
         tooltip: true,
-        textWeak: "Weak",
-        textMedium: "Medium",
-        textStrong: "Strong",
-        textVeryStrong: "Very Strong",
+        textWeak: "Débil",
+        textMedium: "Aceptable",
+        textStrong: "Fuerte",
+        textVeryStrong: "Muy Fuerte",
       };
 
   function Plugin(element, options){
@@ -25,7 +25,7 @@
     init: function(){
       var _this    = this,
           meter    = jQuery("<div/>", {class: "passtrengthMeter"}),
-          tooltip = jQuery("<div/>", {class: "tooltip", text: "Min " + this.options.minChars + " chars"});
+          tooltip = jQuery("<div/>", {class: "tooltip", text: "Min " + this.options.minChars + " caracteres"});
 
       meter.insertAfter(this.element);
       $(this.element).appendTo(meter);
@@ -55,7 +55,7 @@
           special      = 0;
           upperCase    = new RegExp("[A-Z]"),
           numbers      = new RegExp("[0-9]"),
-          specialchars = new RegExp("([!,%,&,@,#,$,^,*,?,_,~])");
+          specialchars = new RegExp("([!,%,&,@,#,$,^,*,?,_,~,+,-,(,),{,}])");
 
       if(value.length >= this.options.minChars){
         chars = 1;

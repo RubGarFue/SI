@@ -38,9 +38,15 @@ header {
     justify-content: center;
 }
 
-header button {
+#login-button {
     border-radius: 10px;
     padding: 0 20px;
+}
+
+#logout-button {
+    border-radius: 10px;
+    padding: 0 20px;
+    background-color:rgb(255, 100, 100);
 }
 
 header a {
