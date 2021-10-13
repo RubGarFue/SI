@@ -10,7 +10,7 @@ import sys
 import random
 
 
-#@app.route('/')
+@app.route('/')
 @app.route('/index', methods=['GET','POST'])
 def index():
     print(url_for('static', filename='css/style.css'), file=sys.stderr)
@@ -54,13 +54,13 @@ def login():
     username = request.form['username']
     password = request.form['password']
 
-    if os.path.isdir('usuarios/' + username):
+    if os.path.isdir('app/usuarios/' + username):
         hash = blake2b()
         hash.update(password.encode('utf8'))
-        password = '{0}'.format(hash.hexadigest())
+        password = '{0}'.format(hash.hexdigest())
 
-        file = open('usuarios/' + username + '/data.dat', 'r')
-        password_check = file.readlines()[1]
+        file = open('app/usuarios/' + username + '/data.dat', 'r')
+        password_check = file.readlines()[1][:-1]
         file.close()
 
         if password != password_check:
@@ -94,14 +94,14 @@ def register():
     credit_card = request.form['credit_card']
     direction = request.form['direction']
 
-    os.mkdir('usuarios/' + username)
+    os.mkdir('app/usuarios/' + username)
 
-    file = open('usuarios/' + username + '/data.dat', 'w')
+    file = open('app/usuarios/' + username + '/data.dat', 'w')
     file.write(username + '\n')
 
     hash = blake2b()
     hash.update(password.encode('utf8'))
-    file.write('{0}'.format(hash.hexadigest()) + '\n')
+    file.write('{0}'.format(hash.hexdigest()) + '\n')
 
     file.write(email + '\n' + credit_card + '\n')
     file.write(str(random.randint(0, 100)))

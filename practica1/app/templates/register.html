@@ -17,8 +17,8 @@
                     <th><label><b>Correo electrónico:</b></label></th>
                 </tr>
                 <tr>
-                    <th><input id="username" type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
-                    <th><input id="email" type="email" placeholder="Introduzca un correo electrónico" required=""></th>
+                    <th><input name="username" type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
+                    <th><input name="email" type="email" placeholder="Introduzca un correo electrónico" required=""></th>
                 </tr>
                 <tr>
                     <th><label><b>Contraseña:</b></label></th>
@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <input id="password" type="password" placeholder="Introduzca una contraseña" required="">
+                        <input id="password" name="password" type="password" placeholder="Introduzca una contraseña" required="">
                         
                         <script src="../static/js/jquery.min.js"></script>
                         <script type="text/javascript" src="../static/js/passtrength.js"></script>
@@ -40,15 +40,15 @@
                             });
                         </script>
                     </th>
-                    <th><input id="credit_card" type="text" placeholder="Introduzca una tarjeta de crédito" maxlength="16" required=""></th>
+                    <th><input name="credit_card" type="text" placeholder="Introduzca una tarjeta de crédito" maxlength="16" required=""></th>
                 </tr>
                 <tr>
                     <th><label><b>Confirmación de contraseña:</b></label></th>
                     <th><label><b>Introduzca una dirección:</b></label></th>
                 </tr>
                 <tr>
-                    <th><input id="password_confirm" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
-                    <th><input id="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
+                    <th><input name="password_confirm" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
+                    <th><input name="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
                 </tr>
             </table>
             
