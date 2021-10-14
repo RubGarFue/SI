@@ -7,7 +7,7 @@
 {% block content %}
 
     <div class="login-screen">
-        <form class="form-register-table" action="{{ url_for('register') }}" method="post">
+        <form id="form-register-table" action="{{ url_for('register') }}" method="post">
             <h1>Registrarse</h1>
             <hr>
 
@@ -17,8 +17,8 @@
                     <th><label><b>Correo electrónico:</b></label></th>
                 </tr>
                 <tr>
-                    <th><input name="username" type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
-                    <th><input name="email" type="email" placeholder="Introduzca un correo electrónico" required=""></th>
+                    <th><input id="username" name="username" type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
+                    <th><input id="email" name="email" type="email" placeholder="Introduzca un correo electrónico" required=""></th>
                 </tr>
                 <tr>
                     <th><label><b>Contraseña:</b></label></th>
@@ -30,25 +30,17 @@
                         
                         <script src="../static/js/jquery.min.js"></script>
                         <script type="text/javascript" src="../static/js/passtrength.js"></script>
-                        <script type="text/javascript">
-                            $(document).ready(function ($) {
-                            $('#password').passtrength({
-                                minChars: 4,
-                                passwordToggle: true,
-                                tooltip: true
-                                });
-                            });
-                        </script>
+                        <script type="text/javascript" src="../static/js/passtrength_ready.js"></script>
                     </th>
-                    <th><input name="credit_card" type="text" placeholder="Introduzca una tarjeta de crédito" maxlength="16" required=""></th>
+                    <th><input id="credit_card" type="tel" inputmode="numeric" pattern="[0-9]{16}" autocomplete="cc-number" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required=""></th>
                 </tr>
                 <tr>
                     <th><label><b>Confirmación de contraseña:</b></label></th>
                     <th><label><b>Introduzca una dirección:</b></label></th>
                 </tr>
                 <tr>
-                    <th><input name="password_confirm" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
-                    <th><input name="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
+                    <th><input id="password_confirm" ame="password_confirm" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
+                    <th><input id="direction" name="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
                 </tr>
             </table>
             
@@ -56,6 +48,8 @@
             <p>¿Ya tiene cuenta?</p>
             <a href="{{ url_for('show_login') }}">Iniciar sesión</a>
         </form>
+        
+        <script type="text/javascript" src="../static/js/register.js"></script>
     </div>
 
 {% endblock %}

@@ -126,7 +126,7 @@ nav ul li:last-child {
     background-repeat: repeat;
 }
 
-.form-login-table {
+#form-login-table {
     position: relative;
     display: table;
     border-style: outset;
@@ -138,7 +138,7 @@ nav ul li:last-child {
     padding: 20px 20px;
 }
 
-input[type=text], input[type=password], input[type=email] {
+input[type=text], input[type=password], input[type=email], input[type=tel] {
     width: 90%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -163,7 +163,7 @@ input[type=text], input[type=password], input[type=email] {
 
 /********** REGISTER STYLE *********/
 
-.form-register-table {
+#form-register-table {
     position: relative;
     display: table;
     border-style: outset;
