@@ -1,81 +1,69 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ title }}
+Videoclub - Carrito de la compra
 {% endblock %}
 
 {% block content %}
+
 
     <div id="shopping-cart-header">
         <p id="shopping-cart-title"><b>Carrito de la compra</b></p>
     </div>
 
-    <!-- Esto se repite para todas las películas en el carrito de la compra -->
-    <div class="shopping-movie-list">
-        <div class="shopping-movie-img-container">
-            <img class="shopping-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction">
-        </div>
-        <div class="shopping-movie-info-container">
-            <p class="movie-title"><b>Pulp fiction</b></p>
-            <p>Precio: <b>10.99€</b></p>
-
-            <div class="shopping-movie-buy">
-                <button type="button">Actualizar unidades</button>
-                <input type="number" value="1" min="1" step="1">
+    {% if products %}
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/shopping_cart.js"></script>
+        {% for movie in products %}
+        <div class="shopping-movie-list">
+            <div class="shopping-movie-img-container">
+                <img class="shopping-movie-img" src="../{{ movie.poster }}" title="{{ movie.titulo }}" alt="{{ movie.titulo }}">
             </div>
+            <div class="shopping-movie-info-container">
+                <p class="movie-title"><b>{{ movie.titulo }}</b></p>
+                <p>Precio por unidad: <b><span class="unitprice">{{ movie.precio }}</span>€</b></p>
+                <p><span class="units">{{ movie.unidades }}</span> unidad{% if movie.unidades>1%}es{% endif %}</p>
 
-            <button class="shopping-movie-delete" type="button">Eliminar del carrito</button>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="shopping-movie-list">
-        <div class="shopping-movie-img-container">
-            <img class="shopping-movie-img" src="../static/img/movies/barbie.jpeg" alt="Barbie">
-        </div>
-        <div class="shopping-movie-info-container">
-            <p class="movie-title"><b>Barbie: la princesa y la costurera</b></p>
-            <p>Precio: <b>10.99€</b></p>
-
-            <div class="shopping-movie-buy">
-                <button type="button">Actualizar unidades</button>
-                <input type="number" value="1" min="1" step="1">
+                <form class="shopping-movie-buy" method="post" action="{{ url_for('shopping_cart_update', movie_id=movie.id) }}">
+                    <button type="submit" name="update" value="update">Actualizar unidades</button>
+                    <input type="number" name="units" value="{{ movie.unidades }}" min="1" step="1">
+                    <br><br>
+                    <button type="submit" name="update" value="remove" class="shopping-movie-delete">Eliminar del carrito</button>
+                </form>
             </div>
-
-            <button class="shopping-movie-delete" type="button">Eliminar del carrito</button>
         </div>
-    </div>
-
-    <hr>
-
-    <div id="shopping-process">
-        <table id="shopping-process-table">
-            <tr>
-                <td class="movie-info-q">Número de productos:</td>
-                <th class="movie-info-a">2</th>
-            </tr>
-            <tr>
-                <td class="movie-info-q">Precio:</td>
-                <td>
-                    <table>
-                        <tr>
-                            <th class="movie-info-a">10,99€</th>
-                        </tr>
-                        <tr>
-                            <th class="movie-info-a">10,99€</th>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td class="movie-info-q">Precio total:</td>
-                <th class="movie-info-a">21,98€</th>
-            </tr>
-        </table>
-        <div id="submit-button-container">
-            <button type="submit" class="submit-button"><b>Procesar compra</b></button>
+        <hr>
+        {% endfor %}
+        <div id="shopping-process">
+            <table id="shopping-process-table">
+                <tr>
+                    <td class="movie-info-q">Número de productos:</td>
+                    <th class="movie-info-a"><span class="total-units"></span></th>
+                </tr>
+                <tr>
+                    <td class="movie-info-q">Precio:</td>
+                    <td>
+                        <table class="subtotal">
+                            <!-- se actualiza con js -->
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q">Precio total:</td>
+                    <th class="movie-info-a"><span class="total"></span>€</th>
+                </tr>
+            </table>
+            <div id="submit-button-container">
+                <button type="submit" class="submit-button"><b>Procesar compra</b></button>
+            </div>
         </div>
-    </div>
+
+        
+
+    {% else %}
+    <p id="empty-cart">No tiene ningún artículo en la cesta</p>
+    {% endif %}
+
+    
 
 {% endblock %}

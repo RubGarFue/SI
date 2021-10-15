@@ -7,7 +7,7 @@
 {% block content %}
 
     <div id="movie-screen">
-        <p id="movie-title">{{ movie.title }}</p>
+        <p id="movie-title">{{ movie.titulo }}</p>
         <div id="movie-info">
             <img id="movie-img" src="../{{ movie.poster }}" alt="{{ movie.title }}" title="{{ movie.title }}">
             <table id="movie-table">
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Género:</b></td>
-                    <td class="movie-info-a">{{ movie.categoria }}</td>
+                    <td class="movie-info-a">- {% for cat in movie.categoria %}{{ cat }} - {% endfor %}</td>
                 </tr>
                 <tr>
                     <td class="movie-info-q"><b>Sinopsis:</b></td>
@@ -36,8 +36,10 @@
         </div>
         <div class="movie-buy">
             <p>Alquilar película por solo: <b>{{ movie.precio }}€</b></p>
-            <button type="button">Añadir al carrito</button>
-            <input type="number" value="1" min="1" step="1">
+            <form method="post" action="{{ url_for('movie',movie_id=movie.id) }}">
+                <button type="submit" name="add-to-cart" value="add">Añadir al carrito</button>
+                <input type="number" value="1" min="1" step="1" name="units">
+            </form>
         </div>
     </div>
 

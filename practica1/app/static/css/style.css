@@ -325,6 +325,14 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     padding: 15px;
 }
 
+#empty-cart{
+    font-size: 34px;
+    color:rgb(136, 136, 136);
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10%;
+}
+
 .shopping-movie-list {
     position: relative;
     display: table;

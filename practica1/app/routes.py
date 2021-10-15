@@ -15,34 +15,36 @@ import random
 def index():
     print(url_for('static', filename='css/style.css'), file=sys.stderr)
     
-    catalogue_data = open(os.path.join(
-        app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
-    catalogue = json.loads(catalogue_data)
+    catalogue = get_movies()
 
     # CARGAR CATEGORIAS DISPONIBLES
     genres = set()
-    for mov in catalogue['peliculas']:
+    for mov in catalogue:
         genres.update(mov['categoria'])
+    genres = sorted(genres)
 
     # BUSCADOR
     if request.method == 'POST':
         if request.form['search-button'] == 'search':
             # search bar
             text = request.form['search-text']
-            catalog_search = [mov for mov in catalogue['peliculas'] if text.lower() in mov['titulo'].lower()]
+            catalogue = [mov for mov in catalogue if text.lower() in mov['titulo'].lower()]
             
             # filter genre
             genre = request.form.get('filter')
-            catalog_search_filter = [mov for mov in catalog_search if genre in mov['categoria']]
+            if genre: 
+                catalogue = [mov for mov in catalogue if genre in mov['categoria']]
             
             # update subtitle
-            subtitle = "Resultados para '" + text  + "'" 
+            subtitle = "Resultados"
+            if text:
+                subtitle += " para '" + text  + "'" 
             if genre:
                 subtitle += " de la categoría " + genre.lower() 
 
-            return render_template('index.html', title="VIDEOCLUB", subtitle=subtitle, genres=genres, movies=catalog_search_filter)
+            return render_template('index.html', title="VIDEOCLUB", subtitle=subtitle, genres=genres, movies=catalogue)
 
-    return render_template('index.html', title="VIDEOCLUB", subtitle="Cartelera actual", genres=genres, movies=catalogue['peliculas'])
+    return render_template('index.html', subtitle="Cartelera actual", genres=genres, movies=catalogue)
 
 
 @app.route('/login', methods=['GET'])
@@ -111,12 +113,19 @@ def register():
     return render_template('login.html', title="Videoclub - Iniciar sesión")
 
 
-@app.route('/movie/<movie_id>', methods=['GET', 'POST'])
+@app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])
 def movie(movie_id):
-    catalogue_data = open(os.path.join(
-        app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
-    catalogue = json.loads(catalogue_data)
-    peli = catalogue["peliculas"][int(movie_id)]
+    catalogue = get_movies()
+    peli = catalogue[movie_id]
+
+    # Add to cart
+    if request.method == "POST":
+        if request.form['add-to-cart'] == 'add':
+            units = int(request.form['units'])
+            if session.get('shopping_cart'):
+                session['shopping_cart'][movie_id] = session['shopping_cart'].get(movie_id,0) + units
+            else:
+                session['shopping_cart'] = {movie_id: units}
     return render_template('movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 
 
@@ -127,8 +136,34 @@ def history():
 
 @app.route('/shopping-cart', methods=['GET', 'POST'])
 def shopping_cart():
-    return render_template('shopping-cart.html', title="Videoclub - Carrito de la compra")
+    catalogue = get_movies()
+    if not session.get('shopping_cart'):
+        return render_template('shopping-cart.html')
+    my_movies = []
+    for movie_ind, units in session['shopping_cart'].items():
+        movie = catalogue[movie_ind]
+        movie['unidades'] = units
+        my_movies.append(movie)
 
+    return render_template('shopping-cart.html', products=my_movies)
+
+
+@app.route('/shopping-cart/update/<int:movie_id>', methods=['GET','POST'])
+def shopping_cart_update(movie_id):
+    if request.method == "POST":
+        if request.form['update'] == 'update':
+            units = int(request.form['units'])
+            session['shopping_cart'][movie_id] = units
+        elif request.form['update'] == 'remove':
+            session['shopping_cart'].pop(movie_id)
+        return redirect(url_for('shopping_cart'))
+
+
+def get_movies():
+    catalogue_data = open(os.path.join(
+        app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
+    catalogue = json.loads(catalogue_data)
+    return catalogue["peliculas"]
 
 
 '''
