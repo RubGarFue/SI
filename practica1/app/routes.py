@@ -29,12 +29,12 @@ def index():
             # search bar
             text = request.form['search-text']
             catalogue = [mov for mov in catalogue if text.lower() in mov['titulo'].lower()]
-            
+
             # filter genre
             genre = request.form.get('filter')
             if genre: 
                 catalogue = [mov for mov in catalogue if genre in mov['categoria']]
-            
+
             # update subtitle
             subtitle = "Resultados"
             if text:
@@ -50,6 +50,7 @@ def index():
 @app.route('/login', methods=['GET'])
 def show_login():
     return render_template('login.html', title="Videoclub - Iniciar sesión")
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -67,12 +68,12 @@ def login():
 
         if password != password_check:
             return render_template('login.html', title="Videoclub - Iniciar sesión")
-        
+
         session['usuario'] = username
         session.modified = True
 
         return redirect(url_for('index'))
-    
+
     else:
         return render_template('login.html', title="Videoclub - Iniciar sesión")
 
@@ -86,6 +87,7 @@ def logout():
 @app.route('/register', methods=['GET'])
 def show_register():
     return render_template('register.html', title="Videoclub - Registro")
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -129,9 +131,13 @@ def movie(movie_id):
     return render_template('movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 
 
-@app.route('/history', methods=['GET', 'POST'])
+@app.route('/history')
 def history():
-    return render_template('history.html', title="Videoclub - Historial de compras")
+    if not session.get('usuario'):
+        # redirect a login y luego volver
+        return render_template('history.html')
+    history = get_history(session['usuario'])
+    return render_template('history.html', compras=history)
 
 
 @app.route('/shopping-cart', methods=['GET', 'POST'])
@@ -148,7 +154,7 @@ def shopping_cart():
     return render_template('shopping-cart.html', products=my_movies)
 
 
-@app.route('/shopping-cart/update/<int:movie_id>', methods=['GET','POST'])
+@app.route('/shopping-cart/update/<int:movie_id>', methods=['GET', 'POST'])
 def shopping_cart_update(movie_id):
     if request.method == "POST":
         if request.form['update'] == 'update':
@@ -164,6 +170,13 @@ def get_movies():
         app.root_path, 'catalogue/catalogue.json'), encoding="utf-8").read()
     catalogue = json.loads(catalogue_data)
     return catalogue["peliculas"]
+
+
+def get_history(user):
+    history_data = open(os.path.join(
+        app.root_path, 'usuarios/' + user + '/historial.json'), encoding="utf-8").read()
+    history = json.loads(history_data)
+    return history['compras']
 
 
 '''

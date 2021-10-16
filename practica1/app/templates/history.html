@@ -1,98 +1,48 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ title }}
+Videoclub - Historial de compras
 {% endblock %}
 
 {% block content %}
 
     <p id="history-title"><b>Historial de compras</b></p>
 
-    <div class="history-purchase">
-        <!--
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/history.js"></script>
+    {% if compras %}
         {% for compra in compras %}
-            <p class="purchase-date">Compra realizada el {{ compra.fecha }}</p>
-            {% for item in compra.articulos %}
-                <table>
-                    <tr>
-                        <td rowspan="4"><img class="purchase-movie-img" src="../{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></td>
-                        <td>{{ item.titulo }}</td>
-                    </tr>
-                    <tr>
-                        <td>Precio por unidad: <b>{{ item.precio_u }}€</b></td>
-                    </tr>
-                    <tr>
-                        <td>{{ item.cantidad }} unidades</td>
-                    </tr>
-                    <tr>
-                        <td>Total: <b>--- calcular total --- €</b></td>
-                    </tr>
-                </table>
-                <br>
-            {% endfor %}
-            <p class="purchase-total">Total: <b>--- calcular total --- €</b></p>
-            <hr>
+            <div class="history-purchase">
+                <button class="purchase-date">Compra realizada el {{ compra.fecha }}</button>
+                <div class="purchase-history">
+                    {% for item in compra.articulos %}
+                        <table class="purchase-table">
+                            <tr>
+                                <td rowspan="4"><img class="purchase-movie-img" src="../{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></td>
+                                <td>{{ item.titulo }}</td>
+                            </tr>
+                            <tr>
+                                <td>Precio por unidad: <b><span class="unitprice">{{ item.precio_u }}</span>€</b></td>
+                            </tr>
+                            <tr>
+                                <td><span class="units">{{ item.cantidad }}</span> unidad{% if item.cantidad>1%}es{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>Total: <b><span class="subtotal"></span>€</b></td>
+                            </tr>
+                        </table>
+                        <br>
+                    {% endfor %}
+                    <p class="purchase-total">Total: <b><span class="total"></span>€</b></p>
+                    <hr>
+                </div>
+            </div>
+            <br>
         {% endfor %}
-            -->
-        <p class="purchase-date">Compra realizada el 10/09/2021</p>
-        <table>
-            <tr>
-                <td rowspan="4"><img class="purchase-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
-                <td>Pulp fiction</td>
-            </tr>
-            <tr>
-                <td>Precio por unidad: <b>10,99$</b></td>
-            </tr>
-            <tr>
-                <td>3 unidades</td>
-            </tr>
-            <tr>
-                <td>Total: <b>32,97$</b></td>
-            </tr>
-        </table>
-        <br>
-        <table>
-            <tr>
-                <td rowspan="4"><img class="purchase-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
-                <td>Pulp fiction pero en realiddad es una pelicula con un nombre mazo largo :)</td>
-            </tr>
-            <tr>
-                <td>Precio por unidad: <b>6,99$</b></td>
-            </tr>
-            <tr>
-                <td>1 unidad</td>
-            </tr>
-            <tr>
-                <td>Total: <b>6,99$</b></td>
-            </tr>
-        </table>
-        <br>
-        <p class="purchase-total">Total: <b>50,00$</b></p>
-    </div>
+    {% else %}
+        <p class="empty">No ha realizado ningún pedido todavía</p>
+    {% endif %}
 
-    <hr>
-
-    <div class="history-purchase">
-        <p class="purchase-date">Compra realizada el 08/01/2021</p>
-        <table>
-            <tr>
-                <td rowspan="4"><img class="purchase-movie-img" src="../static/img/movies/pulp-fiction.jpeg" alt="Pulp fiction" title="Pulp fiction"></td>
-                <td>Pulp fiction</td>
-            </tr>
-            <tr>
-                <td>Precio por unidad: <b>6,99$</b></td>
-            </tr>
-            <tr>
-                <td>1 unidad</td>
-            </tr>
-            <tr>
-                <td>Total: <b>3,99$</b></td>
-            </tr>
-        </table>
-        <br>
-        <p class="purchase-total">Total: <b>4,00$</b></p>
-    </div>
-    
 {% endblock %}
 
 
