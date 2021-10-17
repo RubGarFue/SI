@@ -161,6 +161,21 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     opacity: 0.8;
 }
 
+.error-message-container {
+    position: relative;
+    background-color: rgb(255, 163, 151);
+    width: 80%;
+    left: 10%;
+    padding: 1px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid rgb(255, 0, 0);
+}
+
+.error-message {
+    color: rgb(255, 0, 0);
+}
+
 /********** REGISTER STYLE *********/
 
 #form-register-table {
@@ -434,9 +449,7 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     display: inline-block;
     background-color: rgb(199, 184, 169);
     padding: 10px 18%;
-    border-radius: 5px;
-    border-color: rgb(199, 184, 169);
-    margin-bottom: 20px;
+    border-radius: 4px;
 }
 
 .history-purchase table {

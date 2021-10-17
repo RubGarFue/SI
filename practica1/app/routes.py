@@ -54,6 +54,8 @@ def show_login():
 
 @app.route('/login', methods=['POST'])
 def login():
+    message=""
+
     username = request.form['username']
     password = request.form['password']
 
@@ -67,15 +69,18 @@ def login():
         file.close()
 
         if password != password_check:
-            return render_template('login.html', title="Videoclub - Iniciar sesión")
-
+            message = "La contraseña no es correcta"
+            return render_template('login.html', title="Videoclub - Iniciar sesión", message=message)
+        
         session['usuario'] = username
         session.modified = True
 
         return redirect(url_for('index'))
-
+    
     else:
-        return render_template('login.html', title="Videoclub - Iniciar sesión")
+        message = "No existe el usuario introducido"
+
+        return render_template('login.html', title="Videoclub - Iniciar sesión", message=message)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -91,12 +96,17 @@ def show_register():
 
 @app.route('/register', methods=['POST'])
 def register():
+    message=""
+
     username = request.form['username']
     password = request.form['password']
-    password_confirm = request.form['password_confirm']
     email = request.form['email']
-    credit_card = request.form['credit_card']
+    credit_card = request.form['credit-card']
     direction = request.form['direction']
+
+    if os.path.isdir('app/usuarios/' + username):
+        message = "El usuario introducido ya existe"
+        return render_template('register.html', title="Videoclub - Registro", message=message)
 
     os.mkdir('app/usuarios/' + username)
 
@@ -112,7 +122,7 @@ def register():
 
     file.close()
 
-    return render_template('login.html', title="Videoclub - Iniciar sesión")
+    return render_template('login.html', title="Videoclub - Iniciar sesión", message=message)
 
 
 @app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])

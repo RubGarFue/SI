@@ -16,6 +16,12 @@
             
             <label><b>Contraseña:</b></label>
             <input id="password" name="password" type="password" placeholder="Introduzca una contraseña" required="">
+
+            {% if message %}
+            <div class="error-message-container">
+                <p class="error-message"><b>{{ message }}</b></p>
+            </div>
+            {% endif %}
             
             <button type="submit" class="submit-button"><b>Iniciar sesión</b></button>
             <p>¿No tiene cuenta?</p>

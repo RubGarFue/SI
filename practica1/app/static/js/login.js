@@ -1,6 +1,16 @@
 $('#form-login-table').submit(function() {
-    var username = document.getElementById('username');
-    var password = document.getElementById('password');
+    var username = $('#username').val();
+
+    var reg = new RegExp("^([a-zA-Z]*)$");
+    if (!reg.test(username)) {
+        alert('El nombre de usuario solo puede contener caracteres alfabéticos');
+        return false;
+    }
+
+    if (username.length < 6) {
+        alert('El nombre de usuario debe tener como mínimo 6 caracteres');
+        return false;
+    }
     
-    return true; // return false to cancel form action
+    return true;
 });

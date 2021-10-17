@@ -2,7 +2,6 @@
 
   var pluginName = "passtrength",
       defaults = {
-        minChars: 8,
         passwordToggle: true,
         tooltip: true,
         textWeak: "Débil",
@@ -25,7 +24,7 @@
     init: function(){
       var _this    = this,
           meter    = jQuery("<div/>", {class: "passtrengthMeter"}),
-          tooltip = jQuery("<div/>", {class: "tooltip", text: "Min " + this.options.minChars + " caracteres"});
+          tooltip = jQuery("<div/>", {class: "tooltip", text: "Min 8 chars"});
 
       meter.insertAfter(this.element);
       $(this.element).appendTo(meter);
@@ -57,7 +56,7 @@
           numbers      = new RegExp("[0-9]"),
           specialchars = new RegExp("([!,%,&,@,#,$,^,*,?,_,~,+,-,(,),{,}])");
 
-      if(value.length >= this.options.minChars){
+      if(value.length >= 8){
         chars = 1;
       }else{
         chars = -1;
@@ -87,7 +86,7 @@
 
     addStatus: function(percentage){
       var status = "",
-          text = "Min " + this.options.minChars + " chars",
+          text = "Min 8 chars",
           meter = $(this.element).closest(".passtrengthMeter"),
           tooltip = meter.find(".tooltip");
 

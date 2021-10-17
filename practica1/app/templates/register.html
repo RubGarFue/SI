@@ -32,18 +32,24 @@
                         <script type="text/javascript" src="../static/js/passtrength.js"></script>
                         <script type="text/javascript" src="../static/js/passtrength_ready.js"></script>
                     </th>
-                    <th><input id="credit_card" type="tel" inputmode="numeric" pattern="[0-9]{16}" autocomplete="cc-number" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required=""></th>
+                    <th><input id="credit-card" name="credit-card" type="tel" inputmode="numeric" pattern="[0-9]{16}" autocomplete="cc-number" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required=""></th>
                 </tr>
                 <tr>
                     <th><label><b>Confirmación de contraseña:</b></label></th>
                     <th><label><b>Introduzca una dirección:</b></label></th>
                 </tr>
                 <tr>
-                    <th><input id="password_confirm" ame="password_confirm" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
+                    <th><input id="password2" name="password2" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
                     <th><input id="direction" name="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
                 </tr>
             </table>
-            
+
+            {% if message %}
+            <div class="error-message-container">
+                <p class="error-message"><b>{{ message }}</b></p>
+            </div>
+            {% endif %}
+
             <button type="submit" class="submit-button"><b>Registrarse</b></button>
             <p>¿Ya tiene cuenta?</p>
             <a href="{{ url_for('show_login') }}">Iniciar sesión</a>

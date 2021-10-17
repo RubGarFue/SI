@@ -1,10 +1,28 @@
 $('#form-register-table').submit(function() {
-    var username = document.getElementById('username');
-    var password = document.getElementById('password');
-    var password_confirm = document.getElementById('password_confirm');
-    var email = document.getElementById('email');
-    var credit_card = document.getElementById('credit_card');
-    var direction = document.getElementById('direction');
+    var username = $('#username').val();
+    var password = $('#password').val();
+    var password2 = $('#password2').val();
 
-    return true; // return false to cancel form action
+    var reg = new RegExp("^([a-zA-Z]*)$");
+    if (!reg.test(username)) {
+        alert('El nombre de usuario solo puede contener caracteres alfabéticos');
+        return false;
+    }
+
+    if (username.length < 6) {
+        alert('El nombre de usuario debe tener como mínimo 6 caracteres');
+        return false;
+    }
+
+    if (password.length < 8) {
+        alert('La contraseña debe tener como mínimo 8 caracteres');
+        return false;
+    }
+
+    if (password != password2) {
+        alert('Las contraseñas no coinciden');
+        return false;
+    }
+
+    return true;
 });
