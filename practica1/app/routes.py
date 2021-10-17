@@ -4,7 +4,7 @@
 from app import app
 from flask import render_template, request, url_for, redirect, session, flash
 from hashlib import blake2b
-from datetime import datetime
+from datetime import date
 import json
 import os
 import sys
@@ -177,47 +177,41 @@ def shopping_cart():
 
 @app.route('/shopping-cart', methods=['POST'])
 def shopping_process():
-    catalogue = get_movies()
 
-    # Eliminamos los tres útlimos caracteres del json "], \n, }"
-    with open('app/usuarios/' + session['usuario'] + '/historial.json', 'rb+') as filehandle:
-        filehandle.seek(-3, os.SEEK_END)
-        filehandle.truncate()
-    
-    # Abrimos el archivo json normal
-    file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'w')
+    #comprobamos si estamos logeados
+    if 'usuario' not in session:
+        return render_template('login.html', title="Videoclub - Iniciar sesión", message="")
 
-    #escribimos la fecha y artículos
-    fecha = datetime.now()
-    fecha.strftime(fecha, '%d/%m/%Y')
+    # Abrimos el archivo json
+    file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'r+')
+    file_data = json.load(file)
 
-    file.write('\t\t\t\"fecha\": \"' + fecha + '\",\n')
-    file.write('\t\t\t\"articulos\": [\n')
+    #comprobamos si ya se han hecho compras durante el día
+    fecha = date.today()
+    fecha = fecha.strftime('%d/%m/%Y')
+
+    if fecha not in file_data['compras'][-1].values():
+        file_data['compras'].append({"fecha": fecha, "articulos": []})
+        json.dump(file_data, file)
 
     #escribimos cada artículo
-    for movie_ind, units in session['shopping_cart'].items():
+    for movie_ind in session['shopping_cart'].items():
 
-        # me he tenido que ir a comer
-        # necesito coger titulo, poster y precio (descomenta y ponmelo en las variables de debajo)
-        # cuando vuelva hago el resto solo necesito eso gracias :)
-        #movie = get_movies[movie_ind]
-        #titulo = movie['titulo']
-        #poster = movie['poster']
-        #precio = movie['precio']
+        movie = get_movies()[movie_ind]
+        titulo = movie['titulo']
+        poster = movie['poster']
+        precio = movie['precio']
+        uds = movie['unidades']
 
-        file.write("\t\t\t\t{\n")
-        #movie = catalogue[int(movie_ind)]
-        #movie['unidades']
+        articulo = {"titulo": titulo, "poster": poster, "cantidad": uds, "precio_u": precio}
+        file_data['compras'][-1]['articulos'].append(articulo)
 
-        #file.write()
+        json.dump(file_data, file)
     
-    # Escribimos los últimos caracteres del json y cerramos
-    file.write('\t]\n}')
     file.close()
 
     # Vaciamos la shoopping_cart
-    #! yo haria session.pop('shopping-cart') pq sino la key shopping-cart seguira estando pero asociado a None
-    session['shopping_cart'] = None
+    session.pop('shopping_cart')
 
     return redirect(url_for('index'))
 
