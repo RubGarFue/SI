@@ -11,6 +11,12 @@ Videoclub - Carrito de la compra
         <p id="shopping-cart-title"><b>Carrito de la compra</b></p>
     </div>
 
+    {% if message %}
+    <div class="error-message-container">
+        <p class="error-message"><b>{{ message }}</b></p>
+    </div>
+    {% endif %}
+
     {% if products %}
     <script src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/shopping_cart.js"></script>

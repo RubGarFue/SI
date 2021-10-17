@@ -127,6 +127,8 @@ def register():
     file.write(email + '\n' + credit_card + '\n')
     file.write(str(random.randint(0, 100)))
 
+    file.write('\n0')
+
     file.close()
 
     file = open('app/usuarios/' + username + '/historial.json', 'w')
@@ -163,17 +165,17 @@ def history():
 
 
 @app.route('/shopping-cart', methods=['GET'])
-def shopping_cart():
+def shopping_cart(message = ""):
     catalogue = get_movies()
     if not session.get('shopping_cart'):
-        return render_template('shopping-cart.html')
+        return render_template('shopping-cart.html', message=message)
     my_movies = []
     for movie_ind, units in session['shopping_cart'].items():
         movie = catalogue[int(movie_ind)]
         movie['unidades'] = units
         my_movies.append(movie)
 
-    return render_template('shopping-cart.html', products=my_movies)
+    return redirect(url_for())
 
 @app.route('/shopping-cart', methods=['POST'])
 def shopping_process():
@@ -181,6 +183,17 @@ def shopping_process():
     #comprobamos si estamos logeados
     if 'usuario' not in session:
         return render_template('login.html', title="Videoclub - Iniciar sesión", message="")
+    
+    # Comprobamos si el usuario tiene el saldo suficiente
+    with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
+        saldo = file.readlines()[-2][:-1]
+    
+    #!TODO: OBTENER EL PRECIO TOTAL
+    precio_total = 0
+
+    if saldo < precio_total:
+        message = "No tiene el saldo suficiente para realizar la compra"
+        return url_for('shopping_cart', message=message)
 
     # Abrimos el archivo json
     file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'r+')
@@ -209,6 +222,16 @@ def shopping_process():
         json.dump(file_data, file)
     
     file.close()
+
+    # Actualizamos el data.dat (saldo y puntos)
+    with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
+        data = file.readlines()
+    
+    data[-2] = str(int(data[-2]) - precio_total)
+    data[-1] = str(int(data[-1]) + 0.5*precio_total)
+
+    with open('app/usuarios/' + session['usuario'] + '/data.dat', 'w') as file:
+        file.writelines(data)
 
     # Vaciamos la shoopping_cart
     session.pop('shopping_cart')
