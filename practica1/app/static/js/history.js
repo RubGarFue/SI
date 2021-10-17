@@ -14,8 +14,8 @@ $(document).ready(function() {
             var units = parseInt($(this).find(".units").text())
             var subtotal = price*units
             total_price += subtotal
-            $(this).find(".subtotal").html(subtotal)
+            $(this).find(".subtotal").html(subtotal.toFixed(2))
         })
-        $(this).find(".total").html(total_price)
+        $(this).find(".total").html(total_price.toFixed(2))
     })
 })

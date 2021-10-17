@@ -450,6 +450,7 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     background-color: rgb(199, 184, 169);
     padding: 10px 18%;
     border-radius: 4px;
+    margin-bottom: 15px;
 }
 
 .history-purchase table {

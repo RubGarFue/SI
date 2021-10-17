@@ -195,14 +195,15 @@ def shopping_process():
     file.write('\t\t\t\"articulos\": [\n')
 
     #escribimos cada artículo
-    for movie_ind in session['shopping_cart'].items():
+    for movie_ind, units in session['shopping_cart'].items():
 
         # me he tenido que ir a comer
         # necesito coger titulo, poster y precio (descomenta y ponmelo en las variables de debajo)
         # cuando vuelva hago el resto solo necesito eso gracias :)
-        #titulo =
-        #poster =
-        #precio =
+        #movie = get_movies[movie_ind]
+        #titulo = movie['titulo']
+        #poster = movie['poster']
+        #precio = movie['precio']
 
         file.write("\t\t\t\t{\n")
         #movie = catalogue[int(movie_ind)]
@@ -215,6 +216,7 @@ def shopping_process():
     file.close()
 
     # Vaciamos la shoopping_cart
+    #! yo haria session.pop('shopping-cart') pq sino la key shopping-cart seguira estando pero asociado a None
     session['shopping_cart'] = None
 
     return redirect(url_for('index'))

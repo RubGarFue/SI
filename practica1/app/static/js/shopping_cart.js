@@ -8,7 +8,7 @@ $(document).ready(function(){
         var subt = price*units
         total_price += subt
         total_units += units
-        subtotals += "<tr><th class=\"movie-info-a\">"+ subt +"€</th></tr>"
+        subtotals += "<tr><th class=\"movie-info-a\">"+ subt.toFixed(2) +"€</th></tr>"
     })
     $(".total-units").html(total_units)
     $(".subtotal").html(subtotals)
