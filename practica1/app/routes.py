@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from app import app
-from flask import render_template, request, url_for, redirect, session
+from flask import render_template, request, url_for, redirect, session, flash
 from hashlib import blake2b
+from datetime import datetime
 import json
 import os
 import sys
@@ -55,9 +56,12 @@ def show_login():
 @app.route('/login', methods=['POST'])
 def login():
     message=""
+    salt = "laurayrubensonlosmejores"
 
     username = request.form['username']
     password = request.form['password']
+
+    password += salt
 
     if os.path.isdir('app/usuarios/' + username):
         hash = blake2b()
@@ -97,12 +101,15 @@ def show_register():
 @app.route('/register', methods=['POST'])
 def register():
     message=""
+    salt = "laurayrubensonlosmejores"
 
     username = request.form['username']
     password = request.form['password']
     email = request.form['email']
     credit_card = request.form['credit-card']
     direction = request.form['direction']
+
+    password += salt
 
     if os.path.isdir('app/usuarios/' + username):
         message = "El usuario introducido ya existe"
@@ -122,6 +129,12 @@ def register():
 
     file.close()
 
+    file = open('app/usuarios/' + username + '/historial.json', 'w')
+    
+    file.write('{\n\t\"compras\": []\n}')
+
+    file.close()
+    
     return render_template('login.html', title="Videoclub - Iniciar sesión", message=message)
 
 
@@ -143,25 +156,68 @@ def movie(movie_id):
 
 @app.route('/history')
 def history():
-    if not session.get('usuario'):
-        # redirect a login y luego volver
-        return render_template('history.html')
+    if 'usuario' not in session:
+        return render_template('login.html', title="Videoclub - Iniciar sesión", message="")
     history = get_history(session['usuario'])
     return render_template('history.html', compras=history)
 
 
-@app.route('/shopping-cart', methods=['GET', 'POST'])
+@app.route('/shopping-cart', methods=['GET'])
 def shopping_cart():
     catalogue = get_movies()
     if not session.get('shopping_cart'):
         return render_template('shopping-cart.html')
     my_movies = []
     for movie_ind, units in session['shopping_cart'].items():
-        movie = catalogue[movie_ind]
+        movie = catalogue[int(movie_ind)]
         movie['unidades'] = units
         my_movies.append(movie)
 
     return render_template('shopping-cart.html', products=my_movies)
+
+@app.route('/shopping-cart', methods=['POST'])
+def shopping_process():
+    catalogue = get_movies()
+
+    # Eliminamos los tres útlimos caracteres del json "], \n, }"
+    with open('app/usuarios/' + session['usuario'] + '/historial.json', 'rb+') as filehandle:
+        filehandle.seek(-3, os.SEEK_END)
+        filehandle.truncate()
+    
+    # Abrimos el archivo json normal
+    file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'w')
+
+    #escribimos la fecha y artículos
+    fecha = datetime.now()
+    fecha.strftime(fecha, '%d/%m/%Y')
+
+    file.write('\t\t\t\"fecha\": \"' + fecha + '\",\n')
+    file.write('\t\t\t\"articulos\": [\n')
+
+    #escribimos cada artículo
+    for movie_ind in session['shopping_cart'].items():
+
+        # me he tenido que ir a comer
+        # necesito coger titulo, poster y precio (descomenta y ponmelo en las variables de debajo)
+        # cuando vuelva hago el resto solo necesito eso gracias :)
+        #titulo =
+        #poster =
+        #precio =
+
+        file.write("\t\t\t\t{\n")
+        #movie = catalogue[int(movie_ind)]
+        #movie['unidades']
+
+        #file.write()
+    
+    # Escribimos los últimos caracteres del json y cerramos
+    file.write('\t]\n}')
+    file.close()
+
+    # Vaciamos la shoopping_cart
+    session['shopping_cart'] = None
+
+    return redirect(url_for('index'))
 
 
 @app.route('/shopping-cart/update/<int:movie_id>', methods=['GET', 'POST'])

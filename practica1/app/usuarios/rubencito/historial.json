@@ -1,3 +1,34 @@
 {
-    "compras": []
+    "compras": [
+        {
+            "fecha": "10/03/2021",
+            "articulos": [
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 3,
+                    "precio_u": 10.99
+                },
+                {
+                    "titulo": "Barbie: la costurera y no se que más",
+                    "poster": "static/img/movies/barbie.jpeg",
+                    "cantidad": 1,
+                    "precio_u": 6.99
+                }
+            ]
+
+        },
+        {
+            "fecha": "08/10/2021",
+            "articulos": [
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 1,
+                    "precio_u": 10.99
+                }
+            ]
+
+        }
+    ]
 }
