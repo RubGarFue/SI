@@ -1,3 +1,1 @@
-{
-	"compras": []
-}
+{"compras": [{"fecha": "18/10/2021", "articulos": [{"titulo": "Ratatouille", "poster": "static/img/movies/rataouille.jpeg", "cantidad": 4, "precio_u": 8.05}]}]}

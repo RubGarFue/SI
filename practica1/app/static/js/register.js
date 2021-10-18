@@ -24,5 +24,8 @@ $('#form-register-table').submit(function() {
         return false;
     }
 
+    // store cookie
+    document.cookie = username
+    
     return true;
 });

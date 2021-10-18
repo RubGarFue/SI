@@ -206,7 +206,6 @@ def history():
     with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
         data = file.readlines()
     
-    print(data)
     saldo = float(data[-2])
     puntos = data[-1]
 

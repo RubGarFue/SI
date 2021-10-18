@@ -11,6 +11,15 @@ $('#form-login-table').submit(function() {
         alert('El nombre de usuario debe tener como mínimo 6 caracteres');
         return false;
     }
-    
+
+    // store cookie
+    document.cookie = username
+
     return true;
 });
+
+$(document).ready(function() {
+    if (document.cookie != '') {
+        $("#username").val(document.cookie)
+    }
+})

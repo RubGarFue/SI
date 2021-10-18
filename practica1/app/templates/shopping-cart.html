@@ -32,7 +32,7 @@ Videoclub - Carrito de la compra
 
                 <form class="shopping-movie-buy" method="post" action="{{ url_for('shopping_cart_update', titulo=movie.titulo) }}">
                     <button type="submit" name="update" value="update">Actualizar unidades</button>
-                    <input type="number" name="units" value="{{ movie.unidades }}" min="1" step="1">
+                    <input type="number" name="units" value="{{ movie.cantidad }}" min="1" step="1">
                     <br><br>
                     <button type="submit" name="update" value="remove" class="shopping-movie-delete">Eliminar del carrito</button>
                 </form>

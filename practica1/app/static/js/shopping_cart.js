@@ -12,6 +12,6 @@ $(document).ready(function(){
     })
     $(".total-units").html(total_units)
     $(".subtotal").html(subtotals)
-    $(".total").html(total_price)
+    $(".total").html(total_price.toFixed(2))
     
 })
