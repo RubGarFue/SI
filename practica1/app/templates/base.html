@@ -8,6 +8,9 @@
 </head>
 <body>
 
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/num_users.js"></script>
+
     <div class="sidebar">
         <nav>
             <ul>
@@ -19,6 +22,7 @@
                 {% endif %}
                 <li><a href="{{ url_for('shopping_cart') }}">Cesta de la compra</a></li>
                 <li><a href="{{ url_for('history') }}">Historial de compras</a></li>
+                <li>Hay <b><span id="num-users"></span></b> usuarios conectados</li>
             </ul>
         </nav>  
     </div>

@@ -90,6 +90,8 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('usuario', None)
+    session.pop('shopping_cart')
+    session.modified = True
     return redirect(url_for('index'))
 
 
@@ -153,6 +155,7 @@ def movie(movie_id):
                 session['shopping_cart'][movie_id] = session['shopping_cart'].get(movie_id,0) + units
             else:
                 session['shopping_cart'] = {movie_id: units}
+            session.modified=True
     return render_template('movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 
 
@@ -270,6 +273,7 @@ def shopping_cart():
 
         # Vaciamos la shoopping_cart
         session.pop('shopping_cart')
+        session.modified = True
 
         return redirect(url_for('index'))
 
@@ -280,8 +284,10 @@ def shopping_cart_update(movie_id):
         if request.form['update'] == 'update':
             units = int(request.form['units'])
             session['shopping_cart'][movie_id] = units
+            session.modified=True
         elif request.form['update'] == 'remove':
             session['shopping_cart'].pop(movie_id)
+            session.modified=True
         return redirect(url_for('shopping_cart'))
 
 
@@ -297,6 +303,11 @@ def get_history(user):
         app.root_path, 'usuarios/' + user + '/historial.json'), encoding="utf-8").read()
     history = json.loads(history_data)
     return history['compras']
+
+
+@app.route('/numusers')
+def numusers():
+    return str(random.randint(1,100))
 
 
 '''
