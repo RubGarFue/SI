@@ -432,11 +432,17 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
 
 /************ HISTORY *************/
 
+#balance {
+    width: 100%;
+    position: relative;
+    left: 30%;
+    font-size: 18px;
+}
+
 #history-title {
     font-size: 40px;
     color:rgb(22, 40, 90);
     text-align: center;
-    padding: 15px;
 }
 
 .history-purchase {

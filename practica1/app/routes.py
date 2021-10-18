@@ -156,26 +156,46 @@ def movie(movie_id):
     return render_template('movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 
 
-@app.route('/history')
+@app.route('/history', methods=['GET', 'POST'])
 def history():
     if 'usuario' not in session:
         return render_template('login.html', title="Videoclub - Iniciar sesión", message="")
+
+    # Update data.dat (saldo)
+    with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
+        data = file.readlines()
+    
+    print(data)
+    saldo = float(data[-2])
+    puntos = data[-1]
+
+    # update balance
+    if request.method == "POST":
+        if request.form['add-balance-button'] == 'add':
+            amount = round(float(request.form['add-balance']),2)
+            saldo = str(saldo + amount)
+            data[-2] = saldo + '\n'
+            data[-1] = puntos
+
+            with open('app/usuarios/' + session['usuario'] + '/data.dat', 'w') as file:
+                file.writelines(data)
+
     history = get_history(session['usuario'])
-    return render_template('history.html', compras=history)
+    return render_template('history.html', saldo=saldo, puntos=puntos, compras=history)
 
 
 @app.route('/shopping-cart', methods=['GET'])
-def shopping_cart(message = ""):
+def shopping_cart():
     catalogue = get_movies()
     if not session.get('shopping_cart'):
-        return render_template('shopping-cart.html', message=message)
+        return render_template('shopping-cart.html')
     my_movies = []
     for movie_ind, units in session['shopping_cart'].items():
         movie = catalogue[int(movie_ind)]
         movie['unidades'] = units
         my_movies.append(movie)
 
-    return redirect(url_for())
+    return render_template('shopping-cart.html', products=my_movies)
 
 @app.route('/shopping-cart', methods=['POST'])
 def shopping_process():
@@ -186,14 +206,11 @@ def shopping_process():
     
     # Comprobamos si el usuario tiene el saldo suficiente
     with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
-        saldo = file.readlines()[-2][:-1]
+        saldo = float(file.readlines()[-2][:-1])
     
     #!TODO: OBTENER EL PRECIO TOTAL
-    precio_total = 0
 
-    if saldo < precio_total:
-        message = "No tiene el saldo suficiente para realizar la compra"
-        return url_for('shopping_cart', message=message)
+    #!!
 
     # Abrimos el archivo json
     file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'r+')
@@ -214,7 +231,7 @@ def shopping_process():
         titulo = movie['titulo']
         poster = movie['poster']
         precio = movie['precio']
-        uds = movie['unidades']
+        uds = items
 
         articulo = {"titulo": titulo, "poster": poster, "cantidad": uds, "precio_u": precio}
         file_data['compras'][-1]['articulos'].append(articulo)
@@ -227,8 +244,8 @@ def shopping_process():
     with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
         data = file.readlines()
     
-    data[-2] = str(int(data[-2]) - precio_total)
-    data[-1] = str(int(data[-1]) + 0.5*precio_total)
+    data[-2] = str(round(float(data[-2]) - precio_total),2)
+    data[-1] = str(int(data[-1]) + int(0.5*precio_total))
 
     with open('app/usuarios/' + session['usuario'] + '/data.dat', 'w') as file:
         file.writelines(data)

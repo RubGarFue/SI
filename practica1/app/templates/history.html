@@ -6,6 +6,15 @@ Videoclub - Historial de compras
 
 {% block content %}
 
+    <p id='history-title'><b>Mi saldo</b></p>
+    <form id="balance" method="post" action="{{ url_for('history') }}">
+        <p>Saldo en la cuenta: <b><span id='current-balance'>{{ saldo }}</span>€</b></p>
+        <input type='number' name='add-balance' min="0.01" step="0.01" placeholder="Sumar a mi saldo (€)">
+        <button type="submit" name="add-balance-button" value="add">Sumar al saldo actual</button>
+        <p>Puntos en la cuenta: <b><span id='puntos'>{{ puntos }}</span> puntos</b></p>
+    </form>
+    <br><hr>
+
     <p id="history-title"><b>Historial de compras</b></p>
 
     <script src="../static/js/jquery.min.js"></script>
