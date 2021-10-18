@@ -27,10 +27,10 @@ Videoclub - Carrito de la compra
             </div>
             <div class="shopping-movie-info-container">
                 <p class="movie-title"><b>{{ movie.titulo }}</b></p>
-                <p>Precio por unidad: <b><span class="unitprice">{{ movie.precio }}</span>€</b></p>
-                <p><span class="units">{{ movie.unidades }}</span> unidad{% if movie.unidades>1%}es{% endif %}</p>
+                <p>Precio por unidad: <b><span class="unitprice">{{ movie.precio_u }}</span>€</b></p>
+                <p><span class="units">{{ movie.cantidad }}</span> unidad{% if movie.cantidad>1%}es{% endif %}</p>
 
-                <form class="shopping-movie-buy" method="post" action="{{ url_for('shopping_cart_update', movie_id=movie.id) }}">
+                <form class="shopping-movie-buy" method="post" action="{{ url_for('shopping_cart_update', titulo=movie.titulo) }}">
                     <button type="submit" name="update" value="update">Actualizar unidades</button>
                     <input type="number" name="units" value="{{ movie.unidades }}" min="1" step="1">
                     <br><br>
