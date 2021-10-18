@@ -40,7 +40,7 @@ Videoclub - Carrito de la compra
         </div>
         <hr>
         {% endfor %}
-        <form id="shopping-process" action="{{ url_for('shopping_process') }}" method="post">
+        <form id="shopping-process" action="{{ url_for('shopping_cart') }}" method="post">
             <table id="shopping-process-table">
                 <tr>
                     <td class="movie-info-q">Número de productos:</td>
@@ -56,7 +56,7 @@ Videoclub - Carrito de la compra
                 </tr>
                 <tr>
                     <td class="movie-info-q">Precio total:</td>
-                    <th class="movie-info-a"><span class="total" name="total"></span>€</th>
+                    <th class="movie-info-a"><span class="total"></span>€</th>
                 </tr>
             </table>
             <div id="submit-button-container">
