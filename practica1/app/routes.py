@@ -212,8 +212,8 @@ def history():
     # update balance
     if request.method == "POST":
         if request.form['add-balance-button'] == 'add':
-            amount = round(float(request.form['add-balance']),2)
-            saldo = str(saldo + amount)
+            amount = float(request.form['add-balance'])
+            saldo = str(round(saldo + amount,2))
             data[-2] = saldo + '\n'
             data[-1] = puntos
 
@@ -258,18 +258,13 @@ def shopping_cart():
         if 'usuario' not in session:
             return render_template('login.html', title="Videoclub - Iniciar sesión", message="")
         
-        # Comprobamos si el usuario tiene el saldo suficiente
-        with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
-            saldo = float(file.readlines()[-2][:-1])
-        
-        precio_total = 0
-        
+        # Obtenemos el precio total de la compra
         shopping_cart_data = _read_shopping_cart()
 
+        precio_total = 0
         for articulo in shopping_cart_data['articulos']:
             precio = float(articulo['precio_u'])
             uds = int(articulo['cantidad'])
-
             precio_total += precio * uds
 
         '''
@@ -280,10 +275,30 @@ def shopping_cart():
 
             precio_total += precio*uds
         '''
-            
-        if saldo < precio_total:
-            message = "No tiene el saldo suficiente para realizar la compra"
-            return render_template('shopping-cart.html', products=my_movies, message=message)
+
+        with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
+            data = file.readlines()
+            saldo = float(data[-2][:-1])
+            puntos = int(data[-1])
+
+        method = request.form['payment-method']
+        if method == "puntos":
+            # Comprobamos si el usuario tiene puntos suficientes
+            if puntos < round(precio_total*100,2):
+                message = "No tiene el suficientes puntos para realizar la compra (100 puntos equivalen a 1e)"
+                return render_template('shopping-cart.html', products=my_movies, message=message)
+            new_saldo = saldo
+            new_puntos = int(puntos - precio_total*100)
+        elif method == "saldo":
+            # Comprobamos si el usuario tiene el saldo suficiente
+            if saldo < precio_total:
+                message = "No tiene el saldo suficiente para realizar la compra"
+                return render_template('shopping-cart.html', products=my_movies, message=message)
+            new_saldo = saldo - precio_total
+            new_puntos = puntos
+
+        # Sumamos puntos por la compra
+        new_puntos += int(0.05 * precio_total)
 
         # Abrimos el archivo json
         file = open('app/usuarios/' + session['usuario'] + '/historial.json', 'r+')
@@ -347,8 +362,8 @@ def shopping_cart():
         with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file_dat:
             data = file_dat.readlines()
         
-        data[-2] = str(round(float(data[-2]) - precio_total, 2)) + '\n'
-        data[-1] = str(int(data[-1]) + int(0.05*precio_total))
+        data[-2] = str(round(new_saldo, 2)) + '\n'
+        data[-1] = str(new_puntos)
 
         with open('app/usuarios/' + session['usuario'] + '/data.dat', 'w') as file_dat:
             file_dat.writelines(data)

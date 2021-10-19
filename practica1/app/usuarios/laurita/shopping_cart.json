@@ -1,1 +1,3 @@
-{"articulos": [{"titulo": "Pulp fiction", "poster": "static/img/movies/pulp-fiction.jpeg", "cantidad": 2, "precio_u": 10.99}]}
+{
+	"articulos": []
+}

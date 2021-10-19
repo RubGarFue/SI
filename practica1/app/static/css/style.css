@@ -409,7 +409,7 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
     display: table;
     left: 20%;
     width: 60%;
-    padding: 20px 20px;
+    padding-top: 30px;
 }
 
 #shopping-process-table {
@@ -425,8 +425,12 @@ input[type=text], input[type=password], input[type=email], input[type=tel] {
 }*/
 
 #submit-button-container {
-    padding-top: 30px;
+    padding-top: 10px;
     text-align: center;
+}
+
+#submit-button-container button{
+    margin-top: 20px;
 }
 
 
