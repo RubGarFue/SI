@@ -1,1 +1,38 @@
-{"compras": [{"fecha": "18/10/2021", "articulos": [{"titulo": "Ratatouille", "poster": "static/img/movies/rataouille.jpeg", "cantidad": 4, "precio_u": 8.05}]}, {"fecha": "19/10/2021", "articulos": [{"titulo": "Barbie: la princesa y la costurera", "poster": "static/img/movies/barbie.jpeg", "cantidad": 9, "precio_u": 6.99}, {"titulo": "Pulp fiction", "poster": "static/img/movies/pulp-fiction.jpeg", "cantidad": 13, "precio_u": 10.99}, {"titulo": "Ratatouille", "poster": "static/img/movies/rataouille.jpeg", "cantidad": 1, "precio_u": 8.05}]}]}
+{
+    "compras": [
+        {
+            "fecha": "18/10/2021",
+            "articulos": [
+                {
+                    "titulo": "Ratatouille",
+                    "poster": "static/img/movies/rataouille.jpeg",
+                    "cantidad": 4,
+                    "precio_u": 8.05
+                }
+            ]
+        },
+        {
+            "fecha": "19/10/2021",
+            "articulos": [
+                {
+                    "titulo": "Barbie: la princesa y la costurera",
+                    "poster": "static/img/movies/barbie.jpeg",
+                    "cantidad": 9,
+                    "precio_u": 6.99
+                },
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 13,
+                    "precio_u": 10.99
+                },
+                {
+                    "titulo": "Ratatouille",
+                    "poster": "static/img/movies/rataouille.jpeg",
+                    "cantidad": 1,
+                    "precio_u": 8.05
+                }
+            ]
+        }
+    ]
+}
