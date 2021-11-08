@@ -1,1 +1,2 @@
 -- incrementar precio 2% anual desde orderdate
+-- actual * 1.02^(ahora - entonxes)

@@ -97,3 +97,7 @@ $$ LANGUAGE plpgsql;
 
 -- Llamada a procedimiento 'setCustomersBalance'
 SELECT setCustomersBalance(100);
+
+
+-- d) procedimiento getTopSales
+CREATE OR REPLACE FUNCTION getTopSales(year1 INT, year2 INT, OUT Year INT, OUT Film CHAR, OUT sales bigint);
