@@ -142,20 +142,69 @@ BEGIN
         ON imdb_movies.movieid = products.movieid) AS foo
     GROUP BY movietitle, year;
 
-    SELECT moviecount.year::INT, movietitle, max
-    INTO Year, Film, sales
+    SELECT *
     FROM
-        (SELECT moviecount.year, MAX(count) AS max
-        FROM moviecount
-        GROUP BY moviecount.year) AS moviemax
-    INNER JOIN moviecount
-    ON moviecount.year = moviemax.year
-    AND moviecount.count = moviemax.max
+        (SELECT DISTINCT ON (moviecount.year) moviecount.year::INT, movietitle, max
+        INTO Year, Film, sales
+        FROM
+            (SELECT moviecount.year, MAX(count) AS max
+            FROM moviecount
+            GROUP BY moviecount.year) AS moviemax
+        INNER JOIN moviecount
+        ON moviecount.year = moviemax.year
+        AND moviecount.count = moviemax.max
 
-    WHERE moviemax.year BETWEEN year1 AND year2
+        WHERE moviemax.year BETWEEN year1 AND year2) AS foo
 
     ORDER BY max DESC;
 
     DROP VIEW moviecount;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- e) procedimiento getTopActors
+CREATE OR REPLACE FUNCTION getTopActor(genre CHAR, OUT Actor char, OUT Num INT, OUT Debut INT, OUT Film CHAR, OUT Director CHAR) as $$
+BEGIN
+-- !! MISMO PROBLEMA QUE EN LA ANTERIOR FUNCIÓN
+    CREATE VIEW genreactors
+    AS
+
+    SELECT imdb_actors.actorname, imdb_movies.year, imdb_movies.movietitle, imdb_directors.directorname
+    FROM public.imdb_actors
+        INNER JOIN public.imdb_actormovies
+        ON imdb_actors.actorid = imdb_actormovies.actorid
+        INNER JOIN public.imdb_moviegenres
+        ON imdb_actormovies.movieid = imdb_moviegenres.movieid
+        AND imdb_moviegenres.genre = genre -- El genre de aquí no funciona bien (hace cosas raras)
+        INNER JOIN public.imdb_directormovies
+        ON imdb_actormovies.movieid = imdb_directormovies.movieid
+        INNER JOIN public.imdb_movies
+        ON imdb_actormovies.movieid = imdb_movies.movieid
+        INNER JOIN public.imdb_directors
+        ON imdb_directormovies.directorid = imdb_directors.directorid
+    ORDER BY imdb_actors.actorname, imdb_movies.year;
+
+    CREATE VIEW actorcount
+    AS
+
+    SELECT genreactors.actorname, COUNT(*) AS count
+    FROM genreactors
+    GROUP BY genreactors.actorname
+    HAVING COUNT(*) > 4
+    ORDER BY count DESC;
+
+    SELECT *
+    INTO Actor, Num, Debut, Film, Director
+    FROM
+        (SELECT DISTINCT ON (genreactors.actorname) genreactors.actorname, actorcount.count, genreactors.year, genreactors.movietitle, genreactors.directorname
+        FROM genreactors
+        INNER JOIN actorcount
+        ON genreactors.actorname = actorcount.actorname) AS foo
+    ORDER BY count DESC;
+
+    DROP VIEW actorcount;
+    DROP VIEW genreactors;
+
 END;
 $$ LANGUAGE plpgsql;
