@@ -95,8 +95,51 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
 -- Llamada a procedimiento 'setCustomersBalance'
 SELECT setCustomersBalance(100);
 
+
 -- Llamada al procedimiento 'setOrderAmount'
 SELECT setOrderAmount();
+
+
+-- f) atributos multivaluados en relacinoes
+
+-- moviegenres
+CREATE TABLE public.imdb_genres (
+    genreid serial4 NOT NULL,
+    genrename VARCHAR(32) NOT NULL,
+    PRIMARY KEY (genreid)
+);
+
+INSERT INTO public.imdb_genres (genrename)
+SELECT DISTINCT genre FROM public.imdb_moviegenres 
+ORDER BY genre;
+
+ALTER TABLE public.imdb_moviegenres 
+ADD COLUMN genreid int;
+
+-- TODO: update countryid de imdb_countries
+
+--! esto es lo que tenia Luna que si que le funcionaba
+update imdb_moviegenres 
+set genreid = imdb_genres.genreid 
+from imdb_genres 
+where imdb_moviegenres.genre = imdb_genres.genrename;
+--!
+
+
+ALTER TABLE public.imdb_moviegenres 
+ADD FOREIGN KEY (genreid) REFERENCES public.imdb_genres;
+
+
+
+-- moviecountries
+--todo: same que arriba
+
+
+-- movielanguages
+--todo: same que arriba
+
+
