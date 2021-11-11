@@ -12,7 +12,7 @@ BEGIN
     AND netamount IS NULL;
 
     UPDATE public.orders
-    SET totalamount = ROUND(netamount * (1 + tax/100), 2);
+    SET totalamount = ROUND(netamount * (1 + tax/100), 2)
     WHERE totalamount IS NULL;
 END;
 $$ LANGUAGE plpgsql;

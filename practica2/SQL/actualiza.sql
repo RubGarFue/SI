@@ -120,26 +120,65 @@ ORDER BY genre;
 ALTER TABLE public.imdb_moviegenres 
 ADD COLUMN genreid int;
 
--- TODO: update countryid de imdb_countries
+UPDATE public.imdb_moviegenres
+SET genreid = imdb_genres.genreid
+FROM public.imdb_genres
+WHERE imdb_moviegenres.genre = imdb_genres.genrename;
 
---! esto es lo que tenia Luna que si que le funcionaba
-update imdb_moviegenres 
-set genreid = imdb_genres.genreid 
-from imdb_genres 
-where imdb_moviegenres.genre = imdb_genres.genrename;
---!
-
+ALTER TABLE public.imdb_moviegenres
+DROP COLUMN genre;
 
 ALTER TABLE public.imdb_moviegenres 
 ADD FOREIGN KEY (genreid) REFERENCES public.imdb_genres;
 
-
-
 -- moviecountries
---todo: same que arriba
+CREATE TABLE public.imdb_countries (
+    countryid serial4 NOT NULL,
+    country VARCHAR(32) NOT NULL,
+    PRIMARY KEY (countryid)
+);
 
+INSERT INTO public.imdb_countries (country)
+SELECT DISTINCT country FROM public.imdb_moviecountries
+ORDER BY country;
+
+ALTER TABLE public.imdb_moviecountries
+ADD COLUMN countryid int;
+
+UPDATE public.imdb_moviecountries
+SET countryid = imdb_countries.countryid
+FROM public.imdb_countries
+WHERE imdb_moviecountries.country = imdb_countries.country;
+
+ALTER TABLE public.imdb_moviecountries
+DROP COLUMN country;
+
+ALTER TABLE public.imdb_moviecountries 
+ADD FOREIGN KEY (countryid) REFERENCES public.imdb_countries;
 
 -- movielanguages
---todo: same que arriba
+CREATE TABLE public.imdb_languages (
+    languageid serial4 NOT NULL,
+    language VARCHAR(32) NOT NULL,
+    PRIMARY KEY (languageid)
+);
+
+INSERT INTO public.imdb_languages (language)
+SELECT DISTINCT language FROM public.imdb_movielanguages
+ORDER BY language;
+
+ALTER TABLE public.imdb_movielanguages
+ADD COLUMN languageid int;
+
+UPDATE public.imdb_movielanguages
+SET languageid = imdb_languages.languageid
+FROM public.imdb_languages
+WHERE imdb_movielanguages.language = imdb_languages.language;
+
+ALTER TABLE public.imdb_movielanguages
+DROP COLUMN language;
+
+ALTER TABLE public.imdb_movielanguages
+ADD FOREIGN KEY (languageid) REFERENCES public.imdb_languages;
 
 
