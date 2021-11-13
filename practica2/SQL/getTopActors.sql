@@ -5,12 +5,14 @@ BEGIN
     CREATE VIEW genreactorsgenres
     AS
 
-    SELECT imdb_actors.actorname, imdb_movies.year, imdb_movies.movietitle, imdb_directors.directorname, imdb_moviegenres.genre
+    SELECT imdb_actors.actorname, imdb_movies.year, imdb_movies.movietitle, imdb_directors.directorname, imdb_genres.genrename
     FROM public.imdb_actors
         INNER JOIN public.imdb_actormovies
         ON imdb_actors.actorid = imdb_actormovies.actorid
         INNER JOIN public.imdb_moviegenres
         ON imdb_actormovies.movieid = imdb_moviegenres.movieid
+		INNER JOIN public.imdb_genres
+        ON imdb_moviegenres.genreid = imdb_genres.genreid
         INNER JOIN public.imdb_directormovies
         ON imdb_actormovies.movieid = imdb_directormovies.movieid
         INNER JOIN public.imdb_movies
@@ -26,13 +28,13 @@ BEGIN
             FROM
                 (SELECT actorname, year, movietitle, directorname
                 FROM genreactorsgenres
-                WHERE genreactorsgenres.genre = $1) AS genreactors
+                WHERE genreactorsgenres.genrename = $1) AS genreactors
             INNER JOIN
                 (SELECT genreactors.actorname, COUNT(*) AS count
                 FROM
                     (SELECT actorname, year, movietitle, directorname
                     FROM genreactorsgenres
-                    WHERE genreactorsgenres.genre = $1) AS genreactors
+                    WHERE genreactorsgenres.genrename = $1) AS genreactors
                 GROUP BY genreactors.actorname
                 HAVING COUNT(*) > 4
                 ORDER BY count DESC) AS actorcount
