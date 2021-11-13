@@ -1,0 +1,707 @@
+body {
+    background-color: rgb(196, 196, 196);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+hr {
+    width: 70%;
+}
+
+/********** HEADER STYLE **********/
+
+header {
+    background-color: rgb(255, 196, 108);
+    position: fixed;
+    height: 11%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.name {
+    color: white;
+    margin: auto;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.header-sign-in {
+    float: right;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#login-button {
+    border-radius: 10px;
+    padding: 0 20px;
+}
+
+#logout-button {
+    border-radius: 10px;
+    padding: 0 20px;
+    background-color:rgb(255, 100, 100);
+}
+
+header a {
+    text-decoration: none;
+}
+
+.shopping-cart-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 70%;
+    float: right;
+}
+
+
+/********** SIDEBAR STYLE **********/
+
+.sidebar {
+    background-color: rgb(236, 146, 104);
+    position: fixed;
+    height: 84%;
+    width: 11%;
+    left: 0;
+    top: 11%;
+    font-size: 20px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+nav ul li {
+    padding: 1em;
+    border-bottom: 1px solid #CCC;
+}
+
+nav ul li:last-child {
+    border-bottom: 0;
+}
+
+.sidebar a {
+    text-decoration: none;
+    padding: 5px 5px;
+    display: inline-block;
+}
+
+.sidebar a:link, a:visited {
+    color: rgb(22, 40, 90);
+}
+
+.sidebar a:hover {
+    background-color: rgb(255, 97, 23);
+}
+
+/********** MAIN STYLE ************/
+
+.main {
+    position: absolute;
+    top: 11%;
+    left: 11%;
+    width: 89%;
+    min-height: 79%;
+    background-color: rgb(250, 231, 210);
+    padding-bottom: 5%;
+}
+
+/***********LOGIN STYLE ************/
+
+.login-screen {
+    position: fixed;
+    top: 11%;
+    left: 11%;
+    width: 89%;
+    height: 84%;
+    background: url("../img/login.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+#form-login-table {
+    position: relative;
+    display: table;
+    border-style: outset;
+    top: 25%;
+    left: 35%;
+    width: 30%;
+    text-align: center;
+    background-color: rgb(255, 196, 108);
+    padding: 20px 20px;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=tel] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    background-color: #ff8411;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 80%;
+}
+
+.submit-button:hover {
+    opacity: 0.8;
+}
+
+.error-message-container {
+    position: relative;
+    background-color: rgb(255, 163, 151);
+    width: 80%;
+    left: 10%;
+    padding: 1px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid rgb(255, 0, 0);
+}
+
+.error-message {
+    color: rgb(255, 0, 0);
+}
+
+/********** REGISTER STYLE *********/
+
+#form-register-table {
+    position: relative;
+    display: table;
+    border-style: outset;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    text-align: center;
+    background-color: rgb(255, 196, 108);
+    padding: 20px 20px;
+}
+
+#in-register-table {
+    width: 100%;
+}
+
+
+/********** CATALOG STYLE **********/
+
+#search {
+    padding-top: 40px;
+    padding-left: 70px;
+}
+
+#search-box {
+    box-sizing: border-box;
+    border: 1px solid rgb(184, 182, 182);
+    border-radius: 4px;
+    font-size: 18px;
+    height: 30px;
+    width: 50%;
+    padding-left: 12px;
+}
+
+#filter {
+    font-size: 18px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid rgb(184, 182, 182);
+    margin-left: 20px;
+    padding-left: 5px;
+}
+
+#search button {
+    background: rgb(223, 223, 223);
+    font-size: 18px;
+    border: none;
+    height: 30px;
+    width: 80px;
+    border-radius: 4px;
+    margin-left: 20px;
+}
+
+#search button:hover {
+    background: rgb(184, 182, 182);
+}
+
+#catalog-title {
+    font-size: 30px;
+    color:rgb(22, 40, 90);
+    margin-left: 70px;
+}
+
+#catalog {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px 70px;
+}
+
+.movie {
+    height: 280px;
+    width: 210px;
+    margin-right: 60px;
+    margin-bottom: 60px;
+}
+
+/******** MOVIE DETAIL STYLE *********/
+
+#movie-title {
+    font-size: 40px;
+    font-weight: bold;
+    color: rgb(22, 40, 90);
+    margin: 40px 80px;
+}
+
+#movie-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#movie-img {
+    height: 360px;
+    margin-left: 80px;
+}
+
+#movie-table { 
+    margin: 30px 80px 30px 60px;
+    border-collapse: separate;
+}
+
+#movie-table td {
+    border: 1px solid transparent;
+}
+
+#movie-table td:last-child {
+    border-left-width: 10px;
+}
+
+.movie-info-q {
+    text-align: right;
+    vertical-align: top;
+    color:rgb(87, 87, 87);
+}
+
+.movie-info-a {
+    text-align: left;
+    vertical-align: top;
+}
+
+.movie-buy {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.movie-buy p {
+    margin-right: 25px;
+}
+
+.movie-buy button {
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.movie-buy input {
+    width: 30px;
+    height: 25px;;
+}
+
+/********** SHOPPING CART ***********/
+
+#shopping-cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: url("../img/shopping-cart.jpeg");
+    background-size: auto 50%;
+    border-bottom: 10px solid rgb(236, 146, 104);
+}
+
+#shopping-cart-title {
+    font-size: 40px;
+    color:rgb(22, 40, 90);
+    padding: 15px;
+}
+
+.empty{
+    font-size: 34px;
+    color:rgb(136, 136, 136);
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10%;
+}
+
+.shopping-movie-list {
+    position: relative;
+    display: table;
+    left: 20%;
+    width: 60%;
+    padding: 20px 20px;
+}
+
+.shopping-movie-img-container {
+    width: 35%;
+    float: left;
+}
+
+.shopping-movie-img {
+    width: 65%;
+    height: auto;
+    margin-right: 10%;
+    float: right;
+}
+
+.shopping-movie-info-container {
+    width: 65%;
+    float: right;
+}
+
+.movie-title {
+    font-size: 30px;
+    color:rgb(22, 40, 90);
+    border-bottom: solid;
+}
+
+.shopping-movie-buy {
+    padding-top: 5%;
+    padding-bottom: 2%;
+    height: 70%;
+}
+
+.shopping-movie-buy button {
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.shopping-movie-buy input {
+    width: 30px;
+    height: 25px;
+}
+
+.shopping-movie-delete {
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color:rgb(255, 100, 100);
+}
+
+
+#shopping-process {
+    position: relative;
+    display: table;
+    left: 20%;
+    width: 60%;
+    padding-top: 30px;
+}
+
+#shopping-process-table {
+    position: relative;
+    width: 40%;
+    left: 30%;
+    padding: 15px;
+    background-color: white;
+}
+
+/*#shopping-process-table tr:last-child {
+    border: 10px solid rgb(236, 146, 104);
+}*/
+
+#submit-button-container {
+    padding-top: 10px;
+    text-align: center;
+}
+
+#submit-button-container button{
+    margin-top: 20px;
+}
+
+
+/************ HISTORY *************/
+
+#balance {
+    width: 100%;
+    position: relative;
+    left: 30%;
+    font-size: 18px;
+}
+
+#history-title {
+    font-size: 40px;
+    color:rgb(22, 40, 90);
+    text-align: center;
+}
+
+.history-purchase {
+    width: 100%;
+    text-align: center;
+}
+
+.purchase-date {
+    font-size: 22px;
+    display: inline-block;
+    background-color: rgb(199, 184, 169);
+    padding: 10px 18%;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.history-purchase table {
+    position: relative;
+    left: 30%;
+}
+
+.history-purchase table tr td{
+    border: 1px solid transparent;
+}
+
+/*.history-purchase table tr:first-child td:first-child{
+    width: 100px;
+}*/
+
+.history-purchase table tr:first-child td:nth-child(2), .history-purchase table tr:not(:first-child) td:first-child{
+    width: 500px;
+    border-left-width: 40px;
+    text-align: left;
+}
+
+.history-purchase table tr:first-child td:nth-child(2){
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: rgb(22, 40, 90);
+}
+
+.purchase-total {
+    font-size: 18px;
+    display: inline-block;
+    background-color: rgb(253, 242, 230);
+    border-radius: 4px;
+    padding: 20px 40px;
+}
+
+.purchase-movie-img {
+    width: 170px;
+}
+
+
+/********** FOOTER STYLE ***********/
+
+footer {
+    background-color: rgb(255, 196, 108);
+    color: white;
+    position: fixed;
+    width: 100%;
+    height: 5%;
+    left: 0;
+    bottom: 0;
+    font-size: 15px;
+    text-align: center;
+}
+
+/********** PASSWORD STRENGTH STYLE ***********/
+
+.passtrengthMeter{
+    position: relative;
+    width: 100%;
+  }
+  
+  .passtrengthMeter::after{
+    content: '';
+    height: 5px;
+    overflow: hidden;
+    width: 0%;
+    transition: width .5s;
+    position: absolute;
+    left: 0px;
+    bottom: 12%;
+  }
+  
+  .passtrengthMeter.weak::after{
+    background-color: #EC644B;
+    width: 22.5%;
+    left: 5%;
+  }
+  
+  .passtrengthMeter.medium::after{
+    content: '';
+    background-color: #E87E04;
+    width: 45%;
+    left: 5%;
+  }
+  
+  .passtrengthMeter.strong::after{
+    content: '';
+    background-color: #EFBF17;
+    width: 67.5%;
+    left: 5%;
+  }
+  
+  .passtrengthMeter.very-strong::after{
+    content: '';
+    background-color: #42A72A;
+    width: 90%;
+    left: 5%;
+  }
+  
+  .passtrengthMeter .tooltip {
+    background: #000000;
+    top: 90%;
+    color: #fff;
+    font-family:Arial;
+    font-size: 12px;
+    display: block;
+    left: 50%;
+    margin-bottom: 15px;
+    opacity: 0;
+    padding: 5px 10px;
+    pointer-events: none;
+    position: absolute;
+    min-width: 70px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 10;
+    -webkit-transform: translateY(5px);
+       -moz-transform: translateY(5px);
+        -ms-transform: translateY(5px);
+         -o-transform: translateY(5px);
+            transform: translateY(5px);
+    -webkit-transition: all .25s ease-out;
+       -moz-transition: all .25s ease-out;
+        -ms-transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+    -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+       -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+        -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+         -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+  }
+  
+  .passtrengthMeter.weak .tooltip{
+    background-color: #EC644B;
+  }
+  .passtrengthMeter.weak .tooltip:after{
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #EC644B 7px;
+    top: -7px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+  }
+  
+  .passtrengthMeter.medium .tooltip{
+    background-color: #E87E04;
+  }
+  .passtrengthMeter.medium .tooltip:after{
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #E87E04 7px;
+    top: -7px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+  }
+  
+  .passtrengthMeter.strong .tooltip{
+    background-color: #EFBF17;
+  }
+  .passtrengthMeter.strong .tooltip:after{
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #EFBF17 7px;
+    top: -7px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+  }
+  
+  .passtrengthMeter.very-strong .tooltip{
+    background-color: #42A72A;
+  }
+  .passtrengthMeter.very-strong .tooltip:after{
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #42A72A 7px;
+    top: -7px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+  }
+  
+  .passtrengthMeter.weak .tooltip:before {
+    top: -20px;
+    content: " ";
+    display: block;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .passtrengthMeter .tooltip:after {
+    border-left: solid transparent 7px;
+    border-right: solid transparent 7px;
+    border-bottom: solid #000000 7px;
+    top: -7px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+    -webkit-transition: all .25s ease-out;
+       -moz-transition: all .25s ease-out;
+        -ms-transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+  }
+  
+  .passtrengthMeter:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    -webkit-transform: translateY(10px);
+       -moz-transform: translateY(10px);
+        -ms-transform: translateY(10px);
+         -o-transform: translateY(10px);
+            transform: translateY(10px);
+  }
+  
+  .lte8 .passtrengthMeter .tooltip {
+    display: none;
+  }
+  
+  .lte8 .passtrengthMeter:hover .tooltip {
+    display: block;
+  }
+  

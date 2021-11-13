@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+Videoclub - Historial de compras
+{% endblock %}
+
+{% block content %}
+
+    <p id='history-title'><b>Mi saldo</b></p>
+    <form id="balance" method="post" action="{{ url_for('history') }}">
+        <p>Saldo en la cuenta: <b><span id='current-balance'>{{ saldo }}</span>€</b></p>
+        <input type='number' name='add-balance' min="0.01" step="0.01" placeholder="Sumar a mi saldo (€)">
+        <button type="submit" name="add-balance-button" value="add">Sumar al saldo actual</button>
+        <p>Puntos en la cuenta: <b><span id='puntos'>{{ puntos }}</span> puntos</b></p>
+    </form>
+    <br><hr>
+
+    <p id="history-title"><b>Historial de compras</b></p>
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/history.js"></script>
+    {% if compras %}
+        {% for compra in compras %}
+            <div class="history-purchase">
+                <button class="purchase-date">Compra realizada el {{ compra.fecha }}</button>
+                <div class="purchase-history">
+                    {% for item in compra.articulos %}
+                        <table class="purchase-table">
+                            <tr>
+                                <td rowspan="4"><img class="purchase-movie-img" src="../{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></td>
+                                <td>{{ item.titulo }}</td>
+                            </tr>
+                            <tr>
+                                <td>Precio por unidad: <b><span class="unitprice">{{ item.precio_u }}</span>€</b></td>
+                            </tr>
+                            <tr>
+                                <td><span class="units">{{ item.cantidad }}</span> unidad{% if item.cantidad>1%}es{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>Total: <b><span class="subtotal"></span>€</b></td>
+                            </tr>
+                        </table>
+                        <br>
+                    {% endfor %}
+                    <p class="purchase-total">Total: <b><span class="total"></span>€</b></p>
+                    <hr>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+    {% else %}
+        <p class="empty">No ha realizado ningún pedido todavía</p>
+    {% endif %}
+
+{% endblock %}
+
+

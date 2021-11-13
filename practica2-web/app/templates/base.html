@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{% block title %} {% endblock %}</title>
+    <meta charset="utf-8">
+    <!--<link rel=StyleSheet href="../static/style.css" type="text/css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/num_users.js"></script>
+
+    <div class="sidebar">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Página principal</a></li>
+                {% if not session['usuario'] %}
+                <li><a href="{{ url_for('show_login') }}">Iniciar sesión</a></li>
+                {% else %}
+                <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('shopping_cart') }}">Cesta de la compra</a></li>
+                <li><a href="{{ url_for('history') }}">Historial de compras</a></li>
+                <li>Hay <b><span id="num-users"></span></b> usuarios conectados</li>
+            </ul>
+        </nav>  
+    </div>
+
+    <div class="main">
+        {% block content %} {% endblock %}
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1 class="name">VIDEOCLUB</h1>
+            <div class="header-sign-in">
+                {% if not session['usuario'] %}
+                <p>Hola, identifíquese</p>
+                <button id="login-button" type="button"><a href="{{ url_for('show_login') }}"><b>Iniciar sesión</b></a></button>
+                {% else %}
+                <p>Hola, {{ session['usuario'] }}</p>
+                <button id="logout-button" type="button"><a href="{{ url_for('logout') }}"><b>Cerrar sesión</b></a></button>
+                {% endif %}
+            </div>
+            <div class="shopping-cart">
+                <a href="{{ url_for('shopping_cart') }}"><img class="shopping-cart-img" src="../static/img/shopping-cart.jpeg" alt="Carrito"></a>
+            </div>
+        </div>
+    </header>
+
+    <footer>
+        <p>Copyright © rubgarfue & lauradepazc</p>
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Videoclub - Register
+{% endblock %}
+
+{% block content %}
+
+    <div class="login-screen">
+        <form id="form-register-table" action="{{ url_for('register') }}" method="post">
+            <h1>Registrarse</h1>
+            <hr>
+
+            <table id="in-register-table">
+                <tr>
+                    <th><label><b>Nombre de usuario:</b></label></th>
+                    <th><label><b>Correo electrónico:</b></label></th>
+                </tr>
+                <tr>
+                    <th><input id="username" name="username" type="text" placeholder="Introduzca un nombre de usuario" required=""></th>
+                    <th><input id="email" name="email" type="email" placeholder="Introduzca un correo electrónico" required=""></th>
+                </tr>
+                <tr>
+                    <th><label><b>Contraseña:</b></label></th>
+                    <th><label><b>Tarjeta de crédito:</b></label></th>
+                </tr>
+                <tr>
+                    <th>
+                        <input id="password" name="password" type="password" placeholder="Introduzca una contraseña" required="">
+                        
+                        <script src="../static/js/jquery.min.js"></script>
+                        <script type="text/javascript" src="../static/js/passtrength.js"></script>
+                        <script type="text/javascript" src="../static/js/passtrength_ready.js"></script>
+                    </th>
+                    <th><input id="credit-card" name="credit-card" type="tel" inputmode="numeric" pattern="[0-9]{16}" autocomplete="cc-number" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required=""></th>
+                </tr>
+                <tr>
+                    <th><label><b>Confirmación de contraseña:</b></label></th>
+                    <th><label><b>Introduzca una dirección:</b></label></th>
+                </tr>
+                <tr>
+                    <th><input id="password2" name="password2" type="password" placeholder="Introduzca su contraseña de nuevo" required=""></th>
+                    <th><input id="direction" name="direction" type="text" placeholder="Introduzca una dirección" maxlength="50" required=""></th>
+                </tr>
+            </table>
+
+            {% if message %}
+            <div class="error-message-container">
+                <p class="error-message"><b>{{ message }}</b></p>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="submit-button"><b>Registrarse</b></button>
+            <p>¿Ya tiene cuenta?</p>
+            <a href="{{ url_for('show_login') }}">Iniciar sesión</a>
+        </form>
+        
+        <script type="text/javascript" src="../static/js/register.js"></script>
+    </div>
+
+{% endblock %}
+

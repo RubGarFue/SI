@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+Videoclub - Carrito de la compra
+{% endblock %}
+
+{% block content %}
+
+
+    <div id="shopping-cart-header">
+        <p id="shopping-cart-title"><b>Carrito de la compra</b></p>
+    </div>
+
+    {% if message %}
+    <div class="error-message-container">
+        <p class="error-message"><b>{{ message }}</b></p>
+    </div>
+    {% endif %}
+
+    {% if products %}
+    <script src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/shopping_cart.js"></script>
+        {% for movie in products %}
+        <div class="shopping-movie-list">
+            <div class="shopping-movie-img-container">
+                <img class="shopping-movie-img" src="../{{ movie.poster }}" title="{{ movie.titulo }}" alt="{{ movie.titulo }}">
+            </div>
+            <div class="shopping-movie-info-container">
+                <p class="movie-title"><b>{{ movie.titulo }}</b></p>
+                <p>Precio por unidad: <b><span class="unitprice">{{ movie.precio_u }}</span>€</b></p>
+                <p><span class="units">{{ movie.cantidad }}</span> unidad{% if movie.cantidad>1%}es{% endif %}</p>
+
+                <form class="shopping-movie-buy" method="post" action="{{ url_for('shopping_cart_update', titulo=movie.titulo) }}">
+                    <button type="submit" name="update" value="update">Actualizar unidades</button>
+                    <input type="number" name="units" value="{{ movie.cantidad }}" min="1" step="1">
+                    <br><br>
+                    <button type="submit" name="update" value="remove" class="shopping-movie-delete">Eliminar del carrito</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+        <form id="shopping-process" action="{{ url_for('shopping_cart') }}" method="post">
+            <table id="shopping-process-table">
+                <tr>
+                    <td class="movie-info-q">Número de productos:</td>
+                    <th class="movie-info-a"><span class="total-units"></span></th>
+                </tr>
+                <tr>
+                    <td class="movie-info-q">Precio:</td>
+                    <td>
+                        <table class="subtotal">
+                            <!-- se actualiza con js -->
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="movie-info-q">Precio total:</td>
+                    <th class="movie-info-a"><span class="total"></span>€</th>
+                </tr>
+            </table>
+            <div id="submit-button-container">
+                <div id="payment-method">
+                    <p>Pagar con: </p>
+                    <input type="radio" name="payment-method" value="saldo" checked>
+                    <label for="saldo">Saldo</label>
+                    <input type="radio" name="payment-method" value="puntos">
+                    <label for="puntos">Puntos</label>
+                </div>
+                <button type="submit" class="submit-button"><b>Procesar compra</b></button>
+            </div>
+        </form>
+
+        
+
+    {% else %}
+    <p class="empty">No tiene ningún artículo en la cesta</p>
+    {% endif %}
+
+    
+
+{% endblock %}

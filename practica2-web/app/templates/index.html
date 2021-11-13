@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    VIDEOCLUB
+{% endblock %}
+
+{% block content %}
+
+    <div id="search">
+        <form method="post" action="{{ url_for('index') }}">
+            <input id="search-box" type="text" placeholder="Buscar película..." name="search-text">
+            <select id="filter" name="filter">
+                <option selected value="">Filtro de género</option>
+                {% for genre in genres %}
+                <option value="{{ genre }}">{{ genre }}</option>
+                {% endfor %}
+                <!-- <option value="Acción">Acción</option>
+                <option value="Comedia">Comedia</option>
+                <option value="Drame">Drama</option>
+                <option value="Terror">Terror</option> -->
+            </select>
+            <button type="submit" name="search-button" value="search">Buscar</button>
+        </form>
+    </div> 
+    <p id="catalog-title"><b>{{ subtitle }}</b></p> <!-- se cambia en funcion de la busqueda -->
+    <div id="catalog">
+        {% for item in movies %}
+        <a href="{{ url_for('movie', movie_id=item.id) }}"><img class="movie" src="{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></a>
+        {% endfor %}
+    </div>
+    
+{% endblock %}
+
+
+

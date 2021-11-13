@@ -1,0 +1,49 @@
+{
+    "compras": [
+        {
+            "fecha": "10/03/2021",
+            "articulos": [
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 3,
+                    "precio_u": 10.99
+                },
+                {
+                    "titulo": "Barbie: la costurera y no se que m\u00e1s",
+                    "poster": "static/img/movies/barbie.jpeg",
+                    "cantidad": 1,
+                    "precio_u": 6.99
+                }
+            ]
+        },
+        {
+            "fecha": "08/10/2021",
+            "articulos": [
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 1,
+                    "precio_u": 10.99
+                }
+            ]
+        },
+        {
+            "fecha": "18/10/2021",
+            "articulos": [
+                {
+                    "titulo": "Ratatouille",
+                    "poster": "static/img/movies/rataouille.jpeg",
+                    "cantidad": 7,
+                    "precio_u": 8.05
+                },
+                {
+                    "titulo": "Pulp fiction",
+                    "poster": "static/img/movies/pulp-fiction.jpeg",
+                    "cantidad": 3,
+                    "precio_u": 10.99
+                }
+            ]
+        }
+    ]
+}

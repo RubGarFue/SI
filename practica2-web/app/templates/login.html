@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Videoclub - Login
+{% endblock %}
+
+{% block content %}
+
+    <div class="login-screen">
+        <form id="form-login-table" action="{{ url_for('login') }}" method="post">
+            <h1>Iniciar sesión</h1>
+            <hr>
+
+            <label><b>Nombre de usuario:</b></label>
+            <input id="username" name="username" type="text" placeholder="Introduzca un nombre de usuario" required="">
+            
+            <label><b>Contraseña:</b></label>
+            <input id="password" name="password" type="password" placeholder="Introduzca una contraseña" required="">
+
+            {% if message %}
+            <div class="error-message-container">
+                <p class="error-message"><b>{{ message }}</b></p>
+            </div>
+            {% endif %}
+            
+            <button type="submit" class="submit-button"><b>Iniciar sesión</b></button>
+            <p>¿No tiene cuenta?</p>
+            <a href="{{ url_for('show_register') }}">Registrarse</a>
+        </form>
+
+        <script src="../static/js/jquery.min.js"></script>
+        <script type="text/javascript" src="../static/js/login.js"></script>
+    </div>
+
+{% endblock %}
