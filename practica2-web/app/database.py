@@ -134,6 +134,37 @@ def getMovie(movie_id):
         return 'Something is broken'
 
 
+################# LOGIN FUNCTIONS #####################
+
+# Comprueba si el usuario introducido es correcto (usuario y contrasenna)
+def checkUser(username, password):
+    try:
+        # conexion a la base de datos
+        db_conn = None
+        db_conn = db_engine.connect()
+
+        db_result = db_conn.execute("SELECT *\
+                                     FROM public.customers\
+                                     WHERE username = '" + username + "'\
+                                     AND password = '" + password + "'")
+        
+        db_conn.close()
+        
+        if not db_result.all():
+            return False
+
+        return True
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'
+
+
 ################# REGISTER FUNCTIONS #####################
 
 # Comprueba si existe un usuario

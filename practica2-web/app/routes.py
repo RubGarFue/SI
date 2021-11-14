@@ -74,17 +74,9 @@ def login():
     password += salt
 
     # Comprobamos que el usuario introducido existe en la carpeta "usuarios"
-    if os.path.isdir('app/usuarios/' + username):
-        # Comprobamos que la contraseña sea correcta
-        hash = blake2b()
-        hash.update(password.encode('utf8'))
-        password = '{0}'.format(hash.hexdigest())
-
-        file = open('app/usuarios/' + username + '/data.dat', 'r')
-        password_check = file.readlines()[1][:-1]
-        file.close()
-
-        if password != password_check:
+    if database.userExists(username):
+        # Comprobamos que el formato de usuario sea correcto
+        if not database.checkUser(username, password):
             message = "La contraseña no es correcta"
             return render_template(
                 'login.html', title="Videoclub - Iniciar sesión",
