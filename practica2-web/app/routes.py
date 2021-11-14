@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from app import app
+from app import database
 from flask import render_template, request, url_for, redirect, session
 from hashlib import blake2b
 from datetime import date
@@ -16,12 +17,15 @@ import random
 def index():
     print(url_for('static', filename='css/style.css'), file=sys.stderr)
 
-    catalogue = get_movies()
+    catalogue = database.getCatalogue()
 
     # CARGAR CATEGORIAS DISPONIBLES
     genres = set()
     for mov in catalogue:
         genres.update(mov['categoria'])
+
+        #!! Puesto para que muestre una imagen por lo menos
+        #mov["poster"] = "static/img/movies/pulp-fiction.jpeg"
     genres = sorted(genres)
 
     # BUSCADOR
@@ -129,7 +133,7 @@ def register():
     password += salt
 
     # Comprobamos si el usuario ya existe en la carpeta "usuarios"
-    if os.path.isdir('app/usuarios/' + username):
+    if database.userExists(username):
         message = "El usuario introducido ya existe"
         return render_template(
             'register.html', title="Videoclub - Registro", message=message)
@@ -137,20 +141,8 @@ def register():
     # Creamos una carpeta con el nombre del usuario
     os.mkdir('app/usuarios/' + username)
 
-    # Escribimos todos los campos en el data.dat
-    file = open('app/usuarios/' + username + '/data.dat', 'w')
-    file.write(username + '\n')
-
-    hash = blake2b()
-    hash.update(password.encode('utf8'))
-    file.write('{0}'.format(hash.hexdigest()) + '\n')
-
-    file.write(email + '\n' + direction + '\n' + credit_card + '\n')
-    file.write(str(random.randint(0, 100)))
-
-    file.write('\n0')
-
-    file.close()
+    # Registramos el nuevo usuario
+    database.register(username, password, email, credit_card, direction)
 
     # Creamos un historial json
     file = open('app/usuarios/' + username + '/historial.json', 'w')
@@ -172,8 +164,10 @@ def register():
 
 @app.route('/movie/<int:movie_id>', methods=['GET', 'POST'])
 def movie(movie_id):
-    catalogue = get_movies()
-    peli = catalogue[movie_id]
+    peli = database.getMovie(movie_id)
+
+    #!! Puesto para que muestre una imagen por lo menos
+    peli["poster"] = "static/img/movies/pulp-fiction.jpeg"
 
     # Add to cart
     if request.method == "POST":
