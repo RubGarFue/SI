@@ -178,10 +178,11 @@ def movie(movie_id):
                         break
                 # Si no añadimos nueva entrada
                 if new_film:
-                    articulo = {'titulo': peli['titulo'],
+                    articulo = {'id': peli['id'],
+                                'titulo': peli['titulo'],
                                 'poster': peli['poster'],
                                 'cantidad': units,
-                                'precio_u': peli['precio']}
+                                'precio_u': float(peli['precio'])}
 
                     file_data['articulos'].append(articulo)
 
@@ -228,21 +229,29 @@ def history():
 
 @app.route('/shopping-cart', methods=['GET', 'POST'])
 def shopping_cart():
-    # Leemos el json
-    file_data = _read_shopping_cart()
+    if 'usuario' in session:
+        # Leemos carrito de la base de datos
+        my_movies = database.get_cart(session['usuario'])
 
-    # Si no hay articulos devolvemos cesta vacia
-    if not file_data['articulos']:
-        return render_template('shopping-cart.html', message="")
+        # Si no hay articulos devolvemos cesta vacia
+        if not my_movies:
+            return render_template('shopping-cart.html', message="")
+    else:
+        # Leemos carrito del json
+        file_data = _read_shopping_cart()
 
-    # Si hay articulos los ponemos en my_movies
-    my_movies = []
-    for articulo in file_data['articulos']:
-        my_movies.append(articulo)
+        # Si no hay articulos devolvemos cesta vacia
+        if not file_data['articulos']:
+            return render_template('shopping-cart.html', message="")
+
+        # Si hay articulos los ponemos en my_movies
+        my_movies = []
+        for articulo in file_data['articulos']:
+            my_movies.append(articulo)
 
     if request.method == 'GET':
         return render_template('shopping-cart.html',
-                               products=my_movies, message="")
+                                products=my_movies, message="")
 
     if request.method == 'POST':
         # comprobamos si estamos logeados
@@ -250,21 +259,26 @@ def shopping_cart():
             return render_template(
                 'login.html', title="Videoclub - Iniciar sesión", message="")
 
+
+        ##!!!!!!!!!!!!!!!!!!!!!!!!!!
         # Obtenemos el precio total de la compra
-        shopping_cart_data = _read_shopping_cart()
+        #shopping_cart_data = _read_shopping_cart()
 
         # Calculamos el precio total de los artículos
         precio_total = 0
-        for articulo in shopping_cart_data['articulos']:
+        #for articulo in shopping_cart_data['articulos']:
+        for articulo in my_movies:
             precio = float(articulo['precio_u'])
             uds = int(articulo['cantidad'])
             precio_total += precio * uds
 
-        with open('app/usuarios/' + session['usuario'] + '/data.dat',
-                  'r') as file:
-            data = file.readlines()
-            saldo = float(data[-2][:-1])
-            puntos = int(data[-1])
+        #with open('app/usuarios/' + session['usuario'] + '/data.dat',
+        #          'r') as file:
+        #    data = file.readlines()
+        #    saldo = float(data[-2][:-1])
+        #    puntos = int(data[-1])
+        saldo = database.get_saldo(session['usuario'])
+        puntos = database.get_puntos(session['usuario'])
 
         method = request.form['payment-method']
         if method == "puntos":
@@ -274,8 +288,9 @@ def shopping_cart():
                           "ompra (100 puntos equivalen a 1e)"
                 return render_template(
                     'shopping-cart.html', products=my_movies, message=message)
-            new_saldo = saldo
-            new_puntos = int(puntos - precio_total * 100)
+            #new_saldo = saldo
+            #new_puntos = int(puntos - precio_total * 100)
+            database.update_puntos(session['usuario'], int(puntos - precio_total * 100))
         elif method == "saldo":
             # Comprobamos si el usuario tiene el saldo suficiente
             if saldo < precio_total:
@@ -283,20 +298,24 @@ def shopping_cart():
                           "ra"
                 return render_template(
                     'shopping-cart.html', products=my_movies, message=message)
-            new_saldo = saldo - precio_total
-            new_puntos = puntos
+            #new_saldo = saldo - precio_total
+            #new_puntos = puntos
+            database.update_saldo(session['usuario'], saldo - precio_total)
 
         # Sumamos puntos por la compra
-        new_puntos += int(0.05 * precio_total)
+        #new_puntos += int(0.05 * precio_total)
+        database.update_puntos(session['usuario'], int(0.05 * precio_total), True)
 
         # Abrimos el archivo json
-        file = open(
-            'app/usuarios/' +
-            session['usuario'] +
-            '/historial.json',
-            'r+')
-        file_data = json.load(file)
+        #file = open(
+        #    'app/usuarios/' +
+        #    session['usuario'] +
+        #    '/historial.json',
+        #    'r+')
+        #file_data = json.load(file)
 
+
+        ####!!!!!!!!!!!! HISTORIAL !!!!!!!!!!!!!
         # comprobamos si ya se han hecho compras durante el día
         fecha = date.today()
         fecha = fecha.strftime('%d/%m/%Y')
@@ -310,7 +329,8 @@ def shopping_cart():
         # escribimos cada artículo
         # articulo representa un articulo del shopping_cart y movie_hist una
         # peliucla del historial
-        for articulo in shopping_cart_data['articulos']:
+        #for articulo in shopping_cart_data['articulos']:
+        for articulo in my_movies:
             new_film = True
 
             for movie_hist in file_data['compras'][-1]['articulos']:
@@ -356,30 +376,24 @@ def shopping_cart():
         return redirect(url_for('index'))
 
 
-def _user_shopping_cart(user):
-
-    # Movemos el json a la carpeta de usuario
-    path_src = 'app/shopping_cart/shopping_cart.json'
-    path_dst = 'app/usuarios/' + user + '/shopping_cart.json'
-
+def _user_shopping_cart(username):
     # Comprobamos si la cesta sin usuario no esta vacia
-    if _read_shopping_cart()['articulos']:
-        os.replace(path_src, path_dst)
+    file_data = _read_shopping_cart()['articulos']
+    if not file_data: 
+        return
 
-        # Creamos un nuevo json
-        file = open('app/shopping_cart/shopping_cart.json', 'w')
+    database.remove_user_cart(username)
+    for article in file_data:
+        database.update_cart(username, article['id'], article['cantidad'])
 
-        file.write('{\n\t\"articulos\": []\n}')
-
-        file.close()
-    return
+    # Limpiamos el json antigo
+    file = open('app/shopping_cart/shopping_cart.json', 'w')
+    file.write('{\n\t\"articulos\": []\n}')
+    file.close()
 
 
 def _read_shopping_cart():
-    if 'usuario' not in session:
-        path = 'app/shopping_cart/shopping_cart.json'
-    else:
-        path = 'app/usuarios/' + session['usuario'] + '/shopping_cart.json'
+    path = 'app/shopping_cart/shopping_cart.json'
 
     with open(path, 'r+') as file:
         file_data = json.load(file)

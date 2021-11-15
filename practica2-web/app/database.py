@@ -218,24 +218,18 @@ def register(username, password, email, credit_card, direction):
 
 ############### SHOPPING CART FUNCTIONS #####################
 def update_cart(username, movieid, units):
+    customerid = customerid_from_username(username)
+    orderid = get_open_orderid(customerid)
     try:
         # conexion a la base de datos
         db_conn = None
         db_conn = db_engine.connect()
-        customerid = db_conn.execute("SELECT customerid\
-                                     FROM public.customers\
-                                     WHERE username = '" + username + "'").first()[0]
         prod_id = db_conn.execute("SELECT prod_id\
                                    FROM public.products\
                                    WHERE movieid = '" + str(movieid) + "'").first()[0]
         price = db_conn.execute("SELECT price \
                                  FROM public.products \
                                  WHERE movieid = '" + str(movieid) + "'").first()[0]
-        db_result = db_conn.execute("SELECT orderid \
-                                     FROM public.orders \
-                                     WHERE customerid = '" + str(customerid) + "' \
-                                     AND status is null;")
-        orderid = db_result.fetchone()
         if orderid == None:
             # New order
             orderid = db_conn.execute("SELECT MAX(orderid)+1 FROM public.orders;").first()[0]
@@ -248,7 +242,6 @@ def update_cart(username, movieid, units):
                                      "+ str(units)+");")
         else:
             # Carrito ya existia
-            orderid = orderid[0]
             db_result = db_conn.execute("SELECT * from orderdetail WHERE orderid = "+ str(orderid) +" AND prod_id = "+ str(prod_id) +"")
             if db_result.all():
                 # Ya existen unidades de ese articulo en el carrito
@@ -269,7 +262,164 @@ def update_cart(username, movieid, units):
         return db_error(db_conn)
 
 
+# Elimina el carrito actual de un usuario
+def remove_user_cart(username):
+    customerid = customerid_from_username(username)
+    orderid = get_open_orderid(customerid)
+    if not orderid:
+        return
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_conn.execute("DELETE FROM public.orderdetail \
+                         WHERE orderid = "+ str(orderid))
+        db_conn.execute("DELETE FROM public.orders \
+                         WHERE orderid = "+ str(orderid))
+        db_conn.close()
+    except:
+        db_error(db_conn)
+
+
+# Elimina el articulo con id movieid del carrito de un usuario
+def remove_from_cart(username, movieid):
+    customerid = customerid_from_username(username)
+    orderid = get_open_orderid(customerid)
+    if not orderid:
+        return
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("DELETE FROM public.orderdetail \
+                                     WHERE orderid = "+ str(orderid) +" \
+                                     AND prod_id = (SELECT prod_id FROM public.products WHERE movieid="+ str(movieid) +" LIMIT 1)")
+        db_conn.close()
+    except:
+        db_error(db_conn)
+
+
+# Devuelve el orderid del pedido actual en el carrito
+def get_open_orderid(customerid):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT orderid \
+                                     FROM public.orders \
+                                     WHERE customerid = '" + str(customerid) + "' \
+                                     AND status is null;")
+        orderid = db_result.fetchone()
+        db_conn.close()
+        if orderid:
+            return orderid[0]
+    except:
+        db_error(db_conn)
+
+
+# Devuelve el carrito del usuario
+def get_cart(username):
+    orderid = get_open_orderid(customerid_from_username(username))
+    if not orderid:
+        return
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT movietitle, o.price, o.quantity \
+                                     FROM orderdetail o \
+                                     INNER JOIN products p \
+                                     ON o.prod_id=p.prod_id \
+                                     INNER JOIN imdb_movies m \
+                                     ON p.movieid=m.movieid \
+                                     WHERE orderid = " + str(orderid))
+        db_conn.close()
+
+        cart = []
+        for row in db_result:
+            pelicula = dict()
+            pelicula['titulo'] = row.movietitle
+            pelicula['poster'] = "static/img/movies/pulp-fiction.jpeg"
+            pelicula['cantidad'] = row.quantity
+            pelicula['precio_u'] = float(row.price)
+            cart.append(pelicula)
+        
+        return cart
+    except:
+        db_error(db_conn)
+
+
+# Devuelve el numero de puntos de un usuario
+def get_puntos(username):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT loyalty \
+                                     FROM public.customers \
+                                     WHERE username = '"+ username +"';")
+        db_conn.close()
+        return int(db_result.first()[0])
+    except:
+        db_error(db_conn)
+
+
+# Actualiza los puntos de un usuario
+def update_puntos(username, puntos, sum_puntos=False):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        if sum_puntos:
+            db_conn.execute("UPDATE public.customers \
+                             SET loyalty = loyalty + "+ str(puntos) +" \
+                             WHERE username = '"+ username +"';")
+        else:
+            db_conn.execute("UPDATE public.customers \
+                                        SET loyalty = "+ str(puntos) +" \
+                                        WHERE username = '"+ username +"';")
+        db_conn.close()
+    except:
+        db_error(db_conn)
+
+
+# Devuelve el saldo de un usuario
+def get_saldo(username):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT balance \
+                                     FROM public.customers \
+                                     WHERE username = '"+ username +"';")
+        db_conn.close()
+        return round(float(db_result.first()[0]),2)
+    except:
+        db_error(db_conn)
+
+
+# Actualiza el saldo de un usuario
+def update_saldo(username, puntos):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_conn.execute("UPDATE public.customers \
+                         SET balance = "+ str(puntos) +" \
+                         WHERE username = '"+ username +"';")
+        db_conn.close()
+    except:
+        db_error(db_conn)
+
+
 ################# AUXILIARY FUNCTIONS #####################
+
+# Devuelve el customerid dado el username
+def customerid_from_username(username):
+    try:
+        # conexion a la base de datos
+        db_conn = None
+        db_conn = db_engine.connect()
+        customerid = db_conn.execute("SELECT customerid\
+                                     FROM public.customers\
+                                     WHERE username = '" + username + "'").first()[0]
+        db_conn.close()
+        return customerid
+    except:
+        db_error(db_conn)
+
 
 # Devuelve el top actores de un género concreto
 def getTopActors(genre = 'Action'):
