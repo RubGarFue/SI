@@ -17,16 +17,13 @@ import random
 def index():
     print(url_for('static', filename='css/style.css'), file=sys.stderr)
 
-    catalogue = database.getCatalogue()
-
     # CARGAR CATEGORIAS DISPONIBLES
-    genres = set()
-    for mov in catalogue:
-        genres.update(mov['categoria'])
+    genres = sorted(database.getGenres())
 
-        #!! Puesto para que muestre una imagen por lo menos
-        #mov["poster"] = "static/img/movies/pulp-fiction.jpeg"
-    genres = sorted(genres)
+    # CARGAR CATALOGO
+    catalogue = database.getCatalogue()
+    for mov in catalogue:
+        mov["poster"] = "static/img/movies/pulp-fiction.jpeg"
 
     # BUSCADOR
     if request.method == 'POST':
@@ -71,7 +68,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
 
-    password += salt
+    #password += salt
 
     # Comprobamos que el usuario introducido existe en la carpeta "usuarios"
     if database.userExists(username):
@@ -122,7 +119,7 @@ def register():
     credit_card = request.form['credit-card']
     direction = request.form['direction']
 
-    password += salt
+    #password += salt
 
     # Comprobamos si el usuario ya existe en la carpeta "usuarios"
     if database.userExists(username):
@@ -131,7 +128,7 @@ def register():
             'register.html', title="Videoclub - Registro", message=message)
 
     # Creamos una carpeta con el nombre del usuario
-    os.mkdir('app/usuarios/' + username)
+    #os.mkdir('app/usuarios/' + username)
 
     # Registramos el nuevo usuario
     database.register(username, password, email, credit_card, direction)
@@ -158,36 +155,43 @@ def register():
 def movie(movie_id):
     peli = database.getMovie(movie_id)
 
-    #!! Puesto para que muestre una imagen por lo menos
     peli["poster"] = "static/img/movies/pulp-fiction.jpeg"
 
     # Add to cart
     if request.method == "POST":
         if request.form['add-to-cart'] == 'add':
             units = int(request.form['units'])
+            print(units)
 
             # Leemos el json
-            file_data = _read_shopping_cart()
+            #file_data = _read_shopping_cart()
+            if 'usuario' not in session:
+                with open('app/shopping_cart/shopping_cart.json', 'r+') as file:
+                    file_data = json.load(file)
 
-            # Si la pelicula esta actualizamos unidades
-            new_film = True
-            for articulo in file_data['articulos']:
-                if articulo['titulo'] == peli['titulo']:
-                    articulo['cantidad'] += units
-                    new_film = False
-                    break
+                # Si la pelicula esta actualizamos unidades
+                new_film = True
+                for articulo in file_data['articulos']:
+                    if articulo['titulo'] == peli['titulo']:
+                        articulo['cantidad'] += units
+                        new_film = False
+                        break
+                # Si no añadimos nueva entrada
+                if new_film:
+                    articulo = {'titulo': peli['titulo'],
+                                'poster': peli['poster'],
+                                'cantidad': units,
+                                'precio_u': peli['precio']}
 
-            # Si no añadimos nueva entrada
-            if new_film:
-                articulo = {'titulo': peli['titulo'],
-                            'poster': peli['poster'],
-                            'cantidad': units,
-                            'precio_u': peli['precio']}
+                    file_data['articulos'].append(articulo)
 
-                file_data['articulos'].append(articulo)
+                # Escribimos el json
+                with open('app/shopping_cart/shopping_cart.json', 'w') as file:
+                    json.dump(file_data, file)
+            else:
+                database.update_cart(session['usuario'], peli['id'], units)
 
-            # Escribimos el json
-            _write_shopping_cart(file_data)
+            #_write_shopping_cart(file_data)
     return render_template(
         'movie.html', title="Videoclub - " + peli["titulo"], movie=peli)
 

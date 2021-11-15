@@ -11,6 +11,17 @@ from sqlalchemy.sql import select
 db_engine = create_engine("postgresql://alumnodb:alumnodb@localhost/si1", echo=False)
 db_meta = MetaData(bind=db_engine)
 
+def db_error(db_conn):
+    if db_conn is not None:
+        db_conn.close()
+    print("Exception in DB access:")
+    print("-"*60)
+    traceback.print_exc(file=sys.stderr)
+    print("-"*60)
+
+    return 'Something is broken'
+
+
 ################# INDEX FUNCTIONS ################
 
 # Devuelve todo el catálogo de películas (las 100 primeras)
@@ -51,14 +62,25 @@ def getCatalogue():
         
         return catalog
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
+        return db_error(db_conn)
 
-        return 'Something is broken'
+
+# Devuelve todos los generos disponibles
+def getGenres():
+    try:
+        # conexion a la base de datos
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT genrename\
+                                     FROM public.imdb_genres;")
+        
+        db_conn.close()
+
+        genres = {genre[0] for genre in db_result}
+        return genres
+    except:
+        return db_error(db_conn)
+
 
 # Devuelve una película por id
 def getMovie(movie_id):
@@ -124,14 +146,7 @@ def getMovie(movie_id):
         
         return movie
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
+        return db_error(db_conn)
 
 
 ################# LOGIN FUNCTIONS #####################
@@ -155,14 +170,7 @@ def checkUser(username, password):
 
         return True
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
+        return db_error(db_conn)
 
 
 ################# REGISTER FUNCTIONS #####################
@@ -185,14 +193,7 @@ def userExists(username):
 
         return True
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
+        return db_error(db_conn)
 
 # Registra a un usuario
 def register(username, password, email, credit_card, direction):
@@ -212,14 +213,61 @@ def register(username, password, email, credit_card, direction):
         
         return None
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
+        return db_error(db_conn)
 
-        return 'Something is broken'
+
+############### SHOPPING CART FUNCTIONS #####################
+def update_cart(username, movieid, units):
+    try:
+        # conexion a la base de datos
+        db_conn = None
+        db_conn = db_engine.connect()
+        customerid = db_conn.execute("SELECT customerid\
+                                     FROM public.customers\
+                                     WHERE username = '" + username + "'").first()[0]
+        prod_id = db_conn.execute("SELECT prod_id\
+                                   FROM public.products\
+                                   WHERE movieid = '" + str(movieid) + "'").first()[0]
+        price = db_conn.execute("SELECT price \
+                                 FROM public.products \
+                                 WHERE movieid = '" + str(movieid) + "'").first()[0]
+        db_result = db_conn.execute("SELECT orderid \
+                                     FROM public.orders \
+                                     WHERE customerid = '" + str(customerid) + "' \
+                                     AND status is null;")
+        orderid = db_result.fetchone()
+        if orderid == None:
+            # New order
+            orderid = db_conn.execute("SELECT MAX(orderid)+1 FROM public.orders;").first()[0]
+            db_conn.execute("INSERT INTO public.orders \
+                             VALUES (" + str(orderid) + ", NOW()::date, " + str(customerid) + ", 0, 15, 0, null);")
+            db_conn.execute("INSERT INTO public.orderdetail \
+                             VALUES ("+ str(orderid)+", \
+                                     "+ str(prod_id) +", \
+                                     "+ str(price) +", \
+                                     "+ str(units)+");")
+        else:
+            # Carrito ya existia
+            orderid = orderid[0]
+            db_result = db_conn.execute("SELECT * from orderdetail WHERE orderid = "+ str(orderid) +" AND prod_id = "+ str(prod_id) +"")
+            if db_result.all():
+                # Ya existen unidades de ese articulo en el carrito
+                db_conn.execute("UPDATE orderdetail \
+                                 SET quantity = quantity + "+ str(units) +" \
+                                 WHERE orderid = "+ str(orderid) +";")
+            else:
+                # nueva entrada en orderdetail
+                db_conn.execute("INSERT INTO public.orderdetail \
+                                 VALUES ("+ str(orderid)+", \
+                                         "+ str(prod_id) +", \
+                                         "+ str(price) +", \
+                                         "+ str(units)+");")
+
+        db_conn.close()
+        return True
+    except:
+        return db_error(db_conn)
+
 
 ################# AUXILIARY FUNCTIONS #####################
 
@@ -236,11 +284,4 @@ def getTopActors(genre = 'Action'):
         
         return list(db_result)
     except:
-        if db_conn is not None:
-            db_conn.close()
-        print("Exception in DB access:")
-        print("-"*60)
-        traceback.print_exc(file=sys.stderr)
-        print("-"*60)
-
-        return 'Something is broken'
+        return db_error(db_conn)
