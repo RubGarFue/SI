@@ -217,7 +217,7 @@ def register(username, password, email, credit_card, direction):
 
 
 ############### SHOPPING CART FUNCTIONS #####################
-def update_cart(username, movieid, units):
+def update_cart(username, movieid, units, sum_units=False):
     customerid = customerid_from_username(username)
     orderid = get_open_orderid(customerid)
     try:
@@ -242,12 +242,19 @@ def update_cart(username, movieid, units):
                                      "+ str(units)+");")
         else:
             # Carrito ya existia
-            db_result = db_conn.execute("SELECT * from orderdetail WHERE orderid = "+ str(orderid) +" AND prod_id = "+ str(prod_id) +"")
+            db_result = db_conn.execute("SELECT * FROM orderdetail WHERE orderid = "+ str(orderid) +" AND prod_id = "+ str(prod_id) +"")
             if db_result.all():
                 # Ya existen unidades de ese articulo en el carrito
-                db_conn.execute("UPDATE orderdetail \
-                                 SET quantity = quantity + "+ str(units) +" \
-                                 WHERE orderid = "+ str(orderid) +";")
+                if sum_units:
+                    db_conn.execute("UPDATE orderdetail \
+                                     SET quantity = quantity + "+ str(units) +" \
+                                     WHERE orderid = "+ str(orderid) +" \
+                                     AND prod_id = "+ str(prod_id) +";")
+                else:
+                    db_conn.execute("UPDATE orderdetail \
+                                     SET quantity = "+ str(units) +" \
+                                     WHERE orderid = "+ str(orderid) +" \
+                                     AND prod_id = "+ str(prod_id) +";")
             else:
                 # nueva entrada en orderdetail
                 db_conn.execute("INSERT INTO public.orderdetail \
@@ -417,6 +424,21 @@ def customerid_from_username(username):
                                      WHERE username = '" + username + "'").first()[0]
         db_conn.close()
         return customerid
+    except:
+        db_error(db_conn)
+
+
+# Devuelve el customerid dado el username
+def movieid_from_title(title):
+    try:
+        # conexion a la base de datos
+        db_conn = None
+        db_conn = db_engine.connect()
+        movieid = db_conn.execute("SELECT movieid\
+                                   FROM public.imdb_movies\
+                                   WHERE movietitle = '" + title + "'").first()[0]
+        db_conn.close()
+        return movieid
     except:
         db_error(db_conn)
 

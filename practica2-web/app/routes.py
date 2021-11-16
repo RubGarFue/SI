@@ -190,7 +190,7 @@ def movie(movie_id):
                 with open('app/shopping_cart/shopping_cart.json', 'w') as file:
                     json.dump(file_data, file)
             else:
-                database.update_cart(session['usuario'], peli['id'], units)
+                database.update_cart(session['usuario'], peli['id'], units, True)
 
             #_write_shopping_cart(file_data)
     return render_template(
@@ -416,25 +416,32 @@ def _write_shopping_cart(file_data):
 @app.route('/shopping-cart/update/<string:titulo>', methods=['GET', 'POST'])
 def shopping_cart_update(titulo):
     if request.method == "POST":
-        # Leemos el json
-        file_data = _read_shopping_cart()
 
         if request.form['update'] == 'update':
             units = int(request.form['units'])
 
-            for articulo in file_data['articulos']:
-                if articulo['titulo'] == titulo:
-                    articulo['cantidad'] = units
-                    break
+            if 'usuario' in session:
+                movieid = database.movieid_from_title(titulo)
+                database.update_cart(session['usuario'], movieid, units)
+            else:
+                file_data = _read_shopping_cart()
+                for articulo in file_data['articulos']:
+                    if articulo['titulo'] == titulo:
+                        articulo['cantidad'] = units
+                        break
+                _write_shopping_cart(file_data)
 
         elif request.form['update'] == 'remove':
-            for articulo in file_data['articulos']:
-                if articulo['titulo'] == titulo:
-                    file_data['articulos'].remove(articulo)
-                    break
-
-        # Escribimos el json
-        _write_shopping_cart(file_data)
+            if 'usuario' in session:
+                movieid = database.movieid_from_title(titulo)
+                database.remove_from_cart(session['usuario'], movieid)
+            else:
+                file_data = _read_shopping_cart()
+                for articulo in file_data['articulos']:
+                    if articulo['titulo'] == titulo:
+                        file_data['articulos'].remove(articulo)
+                        break
+                _write_shopping_cart(file_data)
 
         return redirect(url_for('shopping_cart'))
 
