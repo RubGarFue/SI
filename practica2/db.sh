@@ -6,3 +6,5 @@ psql si1 -U alumnodb -h localhost -f SQL/setOrderAmount.sql
 psql si1 -U alumnodb -h localhost -f SQL/actualiza.sql
 psql si1 -U alumnodb -h localhost -f SQL/updOrders.sql
 psql si1 -U alumnodb -h localhost -f SQL/updInventoryAndCustomer.sql
+psql si1 -U alumnodb -h localhost -f SQL/getTopActors.sql
+psql si1 -U alumnodb -h localhost -f SQL/getTopSales.sql
