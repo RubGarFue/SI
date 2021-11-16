@@ -22,7 +22,7 @@ Videoclub - Historial de compras
     {% if compras %}
         {% for compra in compras %}
             <div class="history-purchase">
-                <button class="purchase-date">Compra realizada el {{ compra.fecha }}</button>
+                <button class="purchase-date">Compra realizada el {{ compra.fecha.strftime('%d/%m/%Y') }}</button>
                 <div class="purchase-history">
                     {% for item in compra.articulos %}
                         <table class="purchase-table">

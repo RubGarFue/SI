@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os
 import random
 import sys, traceback
 from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, text
-from sqlalchemy.sql import select
+from sqlalchemy import MetaData
+
 
 # configurar el motor de sqlalchemy
 db_engine = create_engine("postgresql://alumnodb:alumnodb@localhost/si1", echo=False)
 db_meta = MetaData(bind=db_engine)
+
+# Maximo numero de peliculas a mostrar en el catalogo
+LIMIT_MOVIES = '32'
 
 def db_error(db_conn):
     if db_conn is not None:
@@ -25,23 +27,51 @@ def db_error(db_conn):
 ################# INDEX FUNCTIONS ################
 
 # Devuelve todo el catálogo de películas (las 100 primeras)
-def getCatalogue():
+def getCatalogue(search=None, genre=None):
     try:
         # conexion a la base de datos
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT foo.movieid, movietitle, genrename\
-                                     FROM\
-                                        (SELECT *\
-                                        FROM public.imdb_movies\
-                                        ORDER BY movietitle\
-                                        LIMIT 100) AS foo\
-                                     INNER JOIN public.imdb_moviegenres\
-                                     ON foo.movieid = imdb_moviegenres.movieid\
-                                     INNER JOIN public.imdb_genres\
-                                     ON imdb_moviegenres.genreid = imdb_genres.genreid\
-                                     ORDER BY movietitle")
+        if search and genre:
+            db_result = db_conn.execute("SELECT im.movieid, movietitle, genrename\
+                                        FROM public.imdb_movies im \
+                                        INNER JOIN public.imdb_moviegenres\
+                                        ON im.movieid = imdb_moviegenres.movieid\
+                                        INNER JOIN public.imdb_genres\
+                                        ON imdb_moviegenres.genreid = imdb_genres.genreid \
+                                        WHERE LOWER(movietitle) LIKE '%%" + search + "%%' \
+                                        AND genrename = '"+ genre +"' \
+                                        LIMIT " + LIMIT_MOVIES)
+        elif search:
+            db_result = db_conn.execute("SELECT im.movieid, movietitle, genrename\
+                                        FROM public.imdb_movies im \
+                                        INNER JOIN public.imdb_moviegenres\
+                                        ON im.movieid = imdb_moviegenres.movieid\
+                                        INNER JOIN public.imdb_genres\
+                                        ON imdb_moviegenres.genreid = imdb_genres.genreid \
+                                        WHERE LOWER(movietitle) LIKE '%%"+ search +"%%' \
+                                        LIMIT " + LIMIT_MOVIES)
+        elif genre:
+            db_result = db_conn.execute("SELECT im.movieid, movietitle, genrename\
+                                        FROM public.imdb_movies im \
+                                        INNER JOIN public.imdb_moviegenres\
+                                        ON im.movieid = imdb_moviegenres.movieid\
+                                        INNER JOIN public.imdb_genres\
+                                        ON imdb_moviegenres.genreid = imdb_genres.genreid \
+                                        WHERE genrename = '"+ genre +"' \
+                                        LIMIT " + LIMIT_MOVIES)
+        else: 
+            # all movies
+            db_result = db_conn.execute("SELECT foo.movieid, movietitle, genrename\
+                                        FROM\
+                                            (SELECT *\
+                                            FROM public.imdb_movies\
+                                            LIMIT "+ LIMIT_MOVIES +") AS foo\
+                                        INNER JOIN public.imdb_moviegenres\
+                                        ON foo.movieid = imdb_moviegenres.movieid\
+                                        INNER JOIN public.imdb_genres\
+                                        ON imdb_moviegenres.genreid = imdb_genres.genreid")
         
         db_conn.close()
 
@@ -56,6 +86,7 @@ def getCatalogue():
                     pel['categoria'].append(row.genrename)
             if new_film:
                 pelicula['id'] = int(row.movieid)
+                pelicula['poster'] = "static/img/movies/pulp-fiction.jpeg"
                 pelicula['titulo'] = row.movietitle
                 pelicula['categoria'].append(row.genrename)
                 catalog.append(pelicula)
@@ -219,7 +250,7 @@ def register(username, password, email, credit_card, direction):
 ############### SHOPPING CART FUNCTIONS #####################
 def update_cart(username, movieid, units, sum_units=False):
     customerid = customerid_from_username(username)
-    orderid = get_open_orderid(customerid)
+    orderid = get_orderid(customerid).first()
     try:
         # conexion a la base de datos
         db_conn = None
@@ -230,7 +261,7 @@ def update_cart(username, movieid, units, sum_units=False):
         price = db_conn.execute("SELECT price \
                                  FROM public.products \
                                  WHERE movieid = '" + str(movieid) + "'").first()[0]
-        if orderid == None:
+        if not orderid:
             # New order
             orderid = db_conn.execute("SELECT MAX(orderid)+1 FROM public.orders;").first()[0]
             db_conn.execute("INSERT INTO public.orders \
@@ -242,6 +273,7 @@ def update_cart(username, movieid, units, sum_units=False):
                                      "+ str(units)+");")
         else:
             # Carrito ya existia
+            orderid = orderid.orderid
             db_result = db_conn.execute("SELECT * FROM orderdetail WHERE orderid = "+ str(orderid) +" AND prod_id = "+ str(prod_id) +"")
             if db_result.all():
                 # Ya existen unidades de ese articulo en el carrito
@@ -272,9 +304,10 @@ def update_cart(username, movieid, units, sum_units=False):
 # Elimina el carrito actual de un usuario
 def remove_user_cart(username):
     customerid = customerid_from_username(username)
-    orderid = get_open_orderid(customerid)
+    orderid = get_orderid(customerid).first()
     if not orderid:
         return
+    orderid = orderid.orderid
     try:
         db_conn = None
         db_conn = db_engine.connect()
@@ -290,9 +323,10 @@ def remove_user_cart(username):
 # Elimina el articulo con id movieid del carrito de un usuario
 def remove_from_cart(username, movieid):
     customerid = customerid_from_username(username)
-    orderid = get_open_orderid(customerid)
+    orderid = get_orderid(customerid).first()
     if not orderid:
         return
+    orderid = orderid.orderid
     try:
         db_conn = None
         db_conn = db_engine.connect()
@@ -305,27 +339,31 @@ def remove_from_cart(username, movieid):
 
 
 # Devuelve el orderid del pedido actual en el carrito
-def get_open_orderid(customerid):
+def get_orderid(customerid, open=True):
     try:
         db_conn = None
         db_conn = db_engine.connect()
-        db_result = db_conn.execute("SELECT orderid \
-                                     FROM public.orders \
-                                     WHERE customerid = '" + str(customerid) + "' \
-                                     AND status is null;")
-        orderid = db_result.fetchone()
-        db_conn.close()
-        if orderid:
-            return orderid[0]
+        if not open:
+            db_result = db_conn.execute("SELECT orderid \
+                                         FROM public.orders \
+                                         WHERE customerid = '" + str(customerid) + "' \
+                                         AND status is not null;")
+        else:
+            db_result = db_conn.execute("SELECT orderid \
+                                        FROM public.orders \
+                                        WHERE customerid = '" + str(customerid) + "' \
+                                        AND status is null;")
+        return db_result
     except:
         db_error(db_conn)
 
 
 # Devuelve el carrito del usuario
 def get_cart(username):
-    orderid = get_open_orderid(customerid_from_username(username))
+    orderid = get_orderid(customerid_from_username(username)).first()
     if not orderid:
         return
+    orderid = orderid.orderid
     try:
         db_conn = None
         db_conn = db_engine.connect()
@@ -351,6 +389,8 @@ def get_cart(username):
     except:
         db_error(db_conn)
 
+
+############# LOYALTY AND BALANCE FUNCTIONS ################
 
 # Devuelve el numero de puntos de un usuario
 def get_puntos(username):
@@ -399,14 +439,74 @@ def get_saldo(username):
 
 
 # Actualiza el saldo de un usuario
-def update_saldo(username, puntos):
+def update_saldo(username, saldo, sum_saldo=False):
     try:
         db_conn = None
         db_conn = db_engine.connect()
-        db_conn.execute("UPDATE public.customers \
-                         SET balance = "+ str(puntos) +" \
-                         WHERE username = '"+ username +"';")
+        if sum_saldo:
+            db_conn.execute("UPDATE public.customers \
+                             SET balance = balance + "+ str(saldo) +" \
+                             WHERE username = '"+ username +"';")
+        else:
+            db_conn.execute("UPDATE public.customers \
+                             SET balance = "+ str(saldo) +" \
+                             WHERE username = '"+ username +"';")
         db_conn.close()
+    except:
+        db_error(db_conn)
+
+
+def set_order_paid(username):
+    orderid = get_orderid(customerid_from_username(username)).first()
+    if not orderid:
+        return
+    orderid = orderid.orderid
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_conn.execute("UPDATE public.orders \
+                         SET status = 'Paid' \
+                         WHERE orderid = '"+ str(orderid) +"';")
+        db_conn.close()
+    except:
+        db_error(db_conn)
+
+################# HISTORY FUNCTIONS #######################
+def get_history(username):
+    customerid = customerid_from_username(username)
+    orderid = get_orderid(customerid, False)
+    if not orderid:
+        return
+    orderid = [id[0] for id in orderid.all()]
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        compras = []
+        for id in orderid:
+            fecha = db_conn.execute("SELECT orderdate FROM orders WHERE orderid=" + str(id)).first()[0]
+            status = db_conn.execute("SELECT status FROM orders WHERE orderid=" + str(id)).first()[0]
+            db_result = db_conn.execute("SELECT movietitle, o.price, o.quantity\
+                                         FROM orderdetail o \
+                                         INNER JOIN products p \
+                                         ON o.prod_id=p.prod_id \
+                                         INNER JOIN imdb_movies m \
+                                         ON p.movieid=m.movieid \
+                                         WHERE o.orderid = " + str(id))
+            compra = {"orderid": id, "fecha": fecha, "status": status, "articulos": []}
+            for row in db_result:
+                pelicula = dict()
+                pelicula["titulo"] = row.movietitle
+                pelicula["poster"] = "static/img/movies/pulp-fiction.jpeg"
+                pelicula["cantidad"] = row.quantity
+                pelicula["precio_u"] = round(float(row.price),2)
+                compra["articulos"].append(pelicula)
+
+            compras.append(compra)
+
+        db_conn.close()
+        
+        compras = sorted(compras, key=lambda d: d["fecha"], reverse=True)
+        return compras
     except:
         db_error(db_conn)
 
@@ -436,7 +536,7 @@ def movieid_from_title(title):
         db_conn = db_engine.connect()
         movieid = db_conn.execute("SELECT movieid\
                                    FROM public.imdb_movies\
-                                   WHERE movietitle = '" + title + "'").first()[0]
+                                   WHERE movietitle = '" + title.replace("'","''") + "';").first()[0]
         db_conn.close()
         return movieid
     except:
