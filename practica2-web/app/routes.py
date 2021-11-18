@@ -265,13 +265,18 @@ def shopping_cart():
         # Obtenemos el precio total de la compra
         #shopping_cart_data = _read_shopping_cart()
 
-        # Calculamos el precio total de los artículos
+        # Calculamos el precio total de los artículos 
+        # y comprobamos si hay articulos suficientes en inventory
         precio_total = 0
         #for articulo in shopping_cart_data['articulos']:
         for articulo in my_movies:
             precio = float(articulo['precio_u'])
             uds = int(articulo['cantidad'])
             precio_total += precio * uds
+            if not database.check_stock(articulo['titulo'], uds):
+                message = "No disponemos de " + str(uds) + " unidades del articulo '"+ articulo['titulo'] +"'\nLo sentimos :("
+                return render_template(
+                    'shopping-cart.html', products=my_movies, message=message)
 
         #with open('app/usuarios/' + session['usuario'] + '/data.dat',
         #          'r') as file:

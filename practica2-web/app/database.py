@@ -390,6 +390,25 @@ def get_cart(username):
         db_error(db_conn)
 
 
+# Comprueba si hay suficientes unidades del producto solicitado
+def check_stock(title, uds):
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        db_result = db_conn.execute("SELECT stock FROM inventory i \
+                         INNER JOIN products p \
+                         ON i.prod_id=p.prod_id \
+                         INNER JOIN imdb_movies im \
+                         ON p.movieid=im.movieid \
+                         WHERE im.movietitle='"+ title +"'")
+        db_conn.close()
+        stock = int(db_result.first()[0])
+        if stock < uds:
+            return False
+        return True
+    except:
+        db_error(db_conn)
+
 ############# LOYALTY AND BALANCE FUNCTIONS ################
 
 # Devuelve el numero de puntos de un usuario
