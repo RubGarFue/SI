@@ -28,6 +28,31 @@
         <a href="{{ url_for('movie', movie_id=item.id) }}"><img class="movie" src="{{ item.poster }}" alt="{{ item.titulo }}" title="{{ item.titulo }}"></a>
         {% endfor %}
     </div>
+
+    <div>
+        <p id="top-actors-text">Top actores de la categoría {{ genrename }}:</p>
+
+        {% if getTopActors %}
+        <table id="get-top-actors-table">
+            <tr>
+                <th>Actor</th>
+                <th>Num</th>
+                <th>Debut</th>
+                <th>Film</th>
+                <th>Director</th>
+            </tr>
+            {% for actor in getTopActors %}
+            <tr>
+                <td>{{ actor.name }}</td>
+                <td>{{ actor.num }}</td>
+                <td>{{ actor.debut }}</td>
+                <td>{{ actor.film }}</td>
+                <td>{{ actor.director }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
     
 {% endblock %}
 

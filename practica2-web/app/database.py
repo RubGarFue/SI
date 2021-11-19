@@ -551,9 +551,19 @@ def getTopActors(genre = 'Action'):
         db_conn = db_engine.connect()
 
         db_result = db_conn.execute("SELECT * FROM getTopActors('" + genre + "') LIMIT 10")
+
+        actors = []
+
+        for row in db_result:
+            actor = {'name': row.actor,
+                     'num': row.num,
+                     'debut': row.debut,
+                     'film': row.film,
+                     'director': row.director}
+            actors.append(actor)
         
         db_conn.close()
-        
-        return list(db_result)
+
+        return actors
     except:
         return db_error(db_conn)

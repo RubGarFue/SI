@@ -29,14 +29,17 @@ def index():
             # search and filter
             text = request.form['search-text'].lower()
             genre = request.form.get('filter')
+            genrename = genre
             if text and genre:
                 new_catalogue = database.getCatalogue(search=text, genre=genre)
             elif text:
                 new_catalogue = database.getCatalogue(search=text.lower())
+                genrename = 'Action'
             elif genre:
                 new_catalogue = database.getCatalogue(genre=genre)
             else:
                 new_catalogue = catalogue
+                genrename = 'Action'
 
             # update subtitle
             subtitle = "Resultados"
@@ -44,14 +47,19 @@ def index():
                 subtitle += " para '" + text + "'"
             if genre:
                 subtitle += " de la categoría " + genre.lower()
+            
+            getTopActors = database.getTopActors(genrename)
 
             return render_template('index.html', title="VIDEOCLUB",
                                    subtitle=subtitle, genres=genres,
-                                   movies=new_catalogue)
+                                   movies=new_catalogue, genrename=genrename,
+                                   getTopActors=getTopActors)
+
+    getTopActors = database.getTopActors()
 
     return render_template(
         'index.html', subtitle="Cartelera actual", genres=genres,
-        movies=catalogue)
+        movies=catalogue, genrename='Action', getTopActors=getTopActors)
 
 
 @app.route('/login', methods=['GET'])
