@@ -5,9 +5,9 @@ BEGIN
     CREATE VIEW moviecount
     AS
 
-    SELECT movietitle, year, COUNT(*) AS count
+    SELECT movietitle, year, SUM(quantity) AS count
     FROM
-        (SELECT imdb_movies.movietitle, DATE_PART('year', orders.orderdate) as year
+        (SELECT imdb_movies.movietitle, DATE_PART('year', orders.orderdate) as year, quantity
         FROM public.orders INNER JOIN public.orderdetail
         ON orders.orderid = orderdetail.orderid
         INNER JOIN public.products
