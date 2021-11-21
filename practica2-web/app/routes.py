@@ -134,18 +134,8 @@ def register():
         return render_template(
             'register.html', title="Videoclub - Registro", message=message)
 
-    # Creamos una carpeta con el nombre del usuario
-    #os.mkdir('app/usuarios/' + username)
-
     # Registramos el nuevo usuario
     database.register(username, password, email, credit_card, direction)
-
-    # Creamos un historial json
-    #file = open('app/usuarios/' + username + '/historial.json', 'w')
-
-    #file.write('{\n\t\"compras\": []\n}')
-
-    #file.close()
 
     # Creamos una cesta de la compra json
     file = open('app/usuarios/' + username + '/shopping_cart.json', 'w')
@@ -208,12 +198,6 @@ def history():
         return render_template(
             'login.html', title="Videoclub - Iniciar sesión", message="")
 
-    # Update data.dat (saldo)
-    #with open('app/usuarios/' + session['usuario'] + '/data.dat', 'r') as file:
-    #    data = file.readlines()
-
-    #saldo = float(data[-2])
-    #puntos = data[-1]
     saldo = database.get_saldo(session['usuario'])
     puntos = database.get_puntos(session['usuario'])
 
@@ -223,15 +207,7 @@ def history():
             amount = float(request.form['add-balance'])
             database.update_saldo(session['usuario'], round(float(amount),2), True)
             saldo = database.get_saldo(session['usuario'])
-            #saldo = str(round(saldo + amount, 2))
-            #data[-2] = saldo + '\n'
-            #data[-1] = puntos
 
-            #with open('app/usuarios/' + session['usuario'] + '/data.dat',
-            #          'w') as file:
-            #    file.writelines(data)
-
-    #history = get_history(session['usuario'])
     history = database.get_history(session['usuario'])
     return render_template('history.html', saldo=saldo,
                            puntos=puntos, compras=history)
@@ -276,7 +252,6 @@ def shopping_cart():
         # Calculamos el precio total de los artículos 
         # y comprobamos si hay articulos suficientes en inventory
         precio_total = 0
-        #for articulo in shopping_cart_data['articulos']:
         for articulo in my_movies:
             precio = float(articulo['precio_u'])
             uds = int(articulo['cantidad'])
@@ -286,11 +261,6 @@ def shopping_cart():
                 return render_template(
                     'shopping-cart.html', products=my_movies, message=message)
 
-        #with open('app/usuarios/' + session['usuario'] + '/data.dat',
-        #          'r') as file:
-        #    data = file.readlines()
-        #    saldo = float(data[-2][:-1])
-        #    puntos = int(data[-1])
         saldo = database.get_saldo(session['usuario'])
         puntos = database.get_puntos(session['usuario'])
 
@@ -320,69 +290,7 @@ def shopping_cart():
         #new_puntos += int(0.05 * precio_total)
         database.update_puntos(session['usuario'], int(0.05 * precio_total), True)
 
-        # Abrimos el archivo json
-        #file = open(
-        #    'app/usuarios/' +
-        #    session['usuario'] +
-        #    '/historial.json',
-        #    'r+')
-        #file_data = json.load(file)
-
         database.set_order_paid(session['usuario'])
-        # comprobamos si ya se han hecho compras durante el día
-        #fecha = date.today()
-        #fecha = fecha.strftime('%d/%m/%Y')
-
-        #try:
-        #    if fecha not in file_data['compras'][-1].values():
-        #        file_data['compras'].append({"fecha": fecha, "articulos": []})
-        #except IndexError:
-        #    file_data['compras'].append({"fecha": fecha, "articulos": []})
-
-        # escribimos cada artículo
-        # articulo representa un articulo del shopping_cart y movie_hist una
-        # peliucla del historial
-        #for articulo in shopping_cart_data['articulos']:
-        #for articulo in my_movies:
-        #    new_film = True
-
-        #    for movie_hist in file_data['compras'][-1]['articulos']:
-        #        if articulo['titulo'] == movie_hist['titulo']:
-        #            movie_hist['cantidad'] += articulo['cantidad']
-        #            new_film = False
-        #            break
-
-        #    if not new_film:
-        #        continue
-
-        #    file_data['compras'][-1]['articulos'].append(articulo)
-        #file.close()
-
-        #with open('app/usuarios/' + session['usuario'] + '/historial.json',
-        #          'w') as file:
-        #    json.dump(file_data, file)
-
-        # Actualizamos el data.dat (saldo y puntos)
-        #with open('app/usuarios/' + session['usuario'] + '/data.dat',
-        #          'r') as file_dat:
-        #    data = file_dat.readlines()
-
-        #data[-2] = str(round(new_saldo, 2)) + '\n'
-        #data[-1] = str(new_puntos)
-
-        #with open('app/usuarios/' + session['usuario'] + '/data.dat',
-        #          'w') as file_dat:
-        #    file_dat.writelines(data)
-
-        # Vaciamos el historial
-        #file = open(
-        #    'app/usuarios/' +
-        #    session['usuario'] +
-        #    '/shopping_cart.json',
-        #    'w')
-
-        #file.write('{\n\t\"articulos\": []\n}')
-        #file.close()
 
         return redirect(url_for('index'))
 
