@@ -1,0 +1,64 @@
+<!DOCTYPE HTML> 
+<!--
+ Ejemplo de MongoDB
+-->
+<HTML> 
+  <HEAD> 
+	  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8"> 
+	  <TITLE>Ejemplo de MongoDB</TITLE>
+  </HEAD> 
+
+  <BODY>
+ 
+    <h2> Ejemplo de MongoDB</h2>
+
+    <!-- TODO: tabla de películas SciFi -->
+    {% for movie_table in movies%}
+      <table>
+        {% if loop.first %}
+          <caption>Peliculas de ciencia ficcion entre 1994 y 1998</caption>
+        {% elif not loop.last %}
+          <caption>Peliculas protagonizadas por Julia Roberts y Alec Baldwin</caption>
+        {% else %}
+          <caption>Peliculas de drama del 1998 que empiezan por 'The'</caption>
+        {% endif %}
+        <tr>
+          <th>Titulo</th>
+          <th>Generos</th>
+          <th>Anno</th>
+          <th>Directores</th>
+          <th>Actores</th>
+          <th>Peliculas mas relacionadas</th>
+          <th>Peliculas relacionadas</th>
+        </tr>
+        {% for movie in movie_table %}
+          <tr>
+            <td>{{ movie.movietitle }}</td>
+            <td>{{ movie.genres|join('\n') }}</td>
+            <td>{{ movie.year }}</td>
+            <td>{{ movie.directors|join('\n') }}</td>
+            <td>{{ movie.actors|join('\n') }}</td>
+            <td>
+              <ul>
+                {% for m in movie.most_related_movies %}
+                  <li>{{ m.title }} - {{ m.year }}</li>
+                {% endfor %}
+              </ul>
+            <td>
+              <ul>
+                {% for m in movie.related_movies %}
+                  <li>{{ m.movietitle }} - {{ m.year }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    <hr>
+    {% endfor %}
+
+    <!-- TODO: tabla de películas Drama -->
+    <!-- TODO: tabla de películas JR y AB -->
+
+  </BODY>
+</HTML>
