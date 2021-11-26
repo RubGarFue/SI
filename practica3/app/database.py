@@ -47,7 +47,9 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
     
     try:
         # TODO: ejecutar consultas
-        pass
+        if bFallo:
+            # apartado e) borrado de registro en orden incorrecto
+            pass
     except Exception as e:
         # TODO: deshacer en caso de error
         pass
