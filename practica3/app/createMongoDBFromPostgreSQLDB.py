@@ -13,7 +13,7 @@ def getSQLdata():
         database.dbCloseConnect(db_conn)
         result = [{column: value for column, value in row._mapping.items()} for row in db_result]
 
-        movie_genres = getMovieGenres()
+        #movie_genres = getMovieGenres()
 
         for movie in result:
             movieid = str(movie['movieid'])
@@ -24,9 +24,10 @@ def getSQLdata():
             movie['directors'] = getMovieDirectors(movieid)
             movie['actors'] = getMovieActors(movieid)
 
-            resultMostRelatedAndRelated = getMostRelatedAndRelatedMovies(movieid, movie_genres)
+            #resultMostRelatedAndRelated = getMostRelatedAndRelatedMovies(movieid, movie_genres)
 
-            movie['most_related_movies'], movie['related_movies'] = resultMostRelatedAndRelated[0]
+            #movie['most_related_movies'], movie['related_movies'] = resultMostRelatedAndRelated[0]
+            movie['most_related_movies'], movie['related_movies'] = [], []
         return result
     except:
         database.dbError(db_conn)
