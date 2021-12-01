@@ -17,7 +17,7 @@ def getMongoCollection(mongoDB_client):
     return mongo_db.topUK
 
 def mongoDBCloseConnect(mongoDB_client):
-    mongoDB_client.close();
+    mongoDB_client.close()
 
 def dbConnect():
     return db_engine.connect()
