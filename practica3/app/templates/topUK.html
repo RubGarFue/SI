@@ -9,18 +9,19 @@
   </HEAD> 
 
   <BODY>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
  
     <h2> Ejemplo de MongoDB</h2>
 
-    <!-- TODO: tabla de películas SciFi -->
     {% for movie_table in movies%}
-      <table>
+      <table class="table">
         {% if loop.first %}
-          <caption>Peliculas de ciencia ficcion entre 1994 y 1998</caption>
+          <caption><p class="table-title"><b>Peliculas de ciencia ficcion entre 1994 y 1998:</b></p></caption>
         {% elif not loop.last %}
-          <caption>Peliculas protagonizadas por Julia Roberts y Alec Baldwin</caption>
+          <caption><p class="table-title"><b>Peliculas de drama del 1998 que empiezan por 'The':</b></p></caption>
         {% else %}
-          <caption>Peliculas de drama del 1998 que empiezan por 'The'</caption>
+          <caption><p class="table-title"><b>Peliculas protagonizadas por Julia Roberts y Alec Baldwin:</b></p></caption>
         {% endif %}
         <tr>
           <th>Titulo</th>
@@ -47,7 +48,7 @@
             <td>
               <ul>
                 {% for m in movie.related_movies %}
-                  <li>{{ m.movietitle }} - {{ m.year }}</li>
+                  <li>{{ m.title }} - {{ m.year }}</li>
                 {% endfor %}
               </ul>
             </td>
@@ -56,9 +57,6 @@
       </table>
     <hr>
     {% endfor %}
-
-    <!-- TODO: tabla de películas Drama -->
-    <!-- TODO: tabla de películas JR y AB -->
 
   </BODY>
 </HTML>

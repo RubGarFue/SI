@@ -26,7 +26,9 @@ def getSQLdata():
 
             resultMostRelatedAndRelated = getMostRelatedAndRelatedMovies(movieid, movie_genres)
 
-            movie['most_related_movies'], movie['related_movies'] = resultMostRelatedAndRelated
+            movie['most_related_movies'] = resultMostRelatedAndRelated[0]
+            if resultMostRelatedAndRelated[1] != None:
+                movie['related_movies'] = resultMostRelatedAndRelated[1]
         return result
     except:
         database.dbError(db_conn)
@@ -95,13 +97,13 @@ def _getMostRelatedAux():
 
     for row in db_result:
         if not movie:
-            movie = {'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
+            movie = {'movieid': row[0], 'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
             continue
         if row[1] == movie['movietitle']:
             movie['genres'].append(row[2])
         else:
             movie_genres.append(movie)
-            movie = {'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
+            movie = {'movieid': row[0], 'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
     
     return movie_genres
 
@@ -126,17 +128,36 @@ def getMostRelatedAndRelatedMovies(movieid, movie_genres):
     related = []
 
     coincidence = len(genremovie)
-    count = 0
 
     for movie in movie_genres:
-        for genre in movie['genres']:
-            if genre in genremovie:
-                count += 1
-        
-        if coincidence - count == 0:
-            mostRelated.append(movie)
-        elif coincidence - count >= coincidence/2:
-            related.append(movie)
+        if movieid == movie['movieid']:
+            continue
+
+        count = 0
+
+        diff = coincidence - len(movie['genres'])
+
+        if diff > coincidence/2 or diff < -coincidence/2:
+            continue
+        else:
+            for genre in movie['genres']:
+                if genre in genremovie:
+                    count += 1
+
+            if diff == 0 and coincidence - count == 0:
+                if len(mostRelated) == 10:
+                    continue
+                moviedict = {"title": movie['movietitle'], "year": movie['year']}
+                mostRelated.append(moviedict)
+            
+            elif coincidence - count <= coincidence/2:
+                if len(related) == 10:
+                    continue
+                moviedict = {"title": movie['movietitle'], "year": movie['year']}
+                related.append(moviedict)
+    
+    if coincidence == 1:
+        related = None
 
     return mostRelated, related
 

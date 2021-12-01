@@ -1,0 +1,24 @@
+/********** TOPUK STYLE **********/
+
+.table-title {
+    font-size: 20px;
+    color: rgb(0, 28, 151)
+}
+
+.table,
+.table td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+}
+
+.table th {
+    border: 2px solid black;
+    background-color: rgb(63, 63, 63);
+    padding: 15px;
+    color: rgb(255, 255, 255);
+}
+
+.table tr:nth-child(odd) {
+    background-color: rgb(177, 177, 177);
+}

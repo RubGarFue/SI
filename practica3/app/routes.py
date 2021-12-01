@@ -4,6 +4,7 @@
 from app import app
 from app import database
 from flask import render_template, request, url_for
+import re
 
 
 @app.route('/', methods=['POST','GET'])
@@ -34,7 +35,13 @@ def topUK():
     result_a = colUK.find(query_a)
     movies_a = [mov for mov in result_a]
 
-    # query b) y c)
+    query_b = {"movietitle": {"$regex": '^.*, The$'}, "genres": "Drama", "year": 1998}
+    result_b = colUK.find(query_b)
+    movies_b = [mov for mov in result_b]
 
-    movies=[movies_a,[],[]]
+    query_c = {"$and": [{"actors": "Roberts, Julia"}, {"actors": "Baldwin, Alec"}]}
+    result_c = colUK.find(query_c)
+    movies_c = [mov for mov in result_c]
+
+    movies=[movies_a, movies_b, movies_c]
     return render_template('topUK.html', movies=movies)
