@@ -38,7 +38,6 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
     # Array de trazas a mostrar en la página
     dbr=[]
 
-    # TODO: Ejecutar consultas de borrado
     # - ordenar consultas según se desee provocar un error (bFallo True) o no
     # - ejecutar commit intermedio si bCommit es True
     # - usar sentencias SQL ('BEGIN', 'COMMIT', ...) si bSQL es True
@@ -46,7 +45,7 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
     # - ir guardando trazas mediante dbr.append()
     
     try:
-        #TODO: anadir el sleep, donde???
+        #TODO: meter el sleep somewhere
         db_conn = dbConnect()
         trans = beginTransaction(db_conn, bSQL)
         dbr.append("Comienza la transaccion")
@@ -55,10 +54,10 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
             # apartado e) borrado de registro en orden incorrecto
             delOrderDetail(db_conn, city) # orden correcto
             dbr.append("Borrado en la tabla orderdetail con exito")
-            #! apartado j) 
-            #if bCommit:
-            #    commitTransaction(db_conn, trans)
-            #    beginTransaction(db_conn, bSQL)
+            if bCommit:
+                dbr.append("Commit intermedio")
+                commitTransaction(db_conn, trans)
+                beginTransaction(db_conn, bSQL)
             delCustomer(db_conn, city) # fallo restriccion foreign key
             dbr.append("Borrado en la tabla customers con exito")
             delOrder(db_conn, city)
