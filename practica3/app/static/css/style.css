@@ -5,6 +5,10 @@
     color: rgb(0, 28, 151)
 }
 
+.table{
+    margin: 50px;
+}
+
 .table,
 .table td {
     border: 2px solid black;

@@ -96,14 +96,16 @@ def _getMostRelatedAux():
     movie = None
 
     for row in db_result:
+        ind = row[1].rfind('(')
+        movietitle = row[1][:ind-1] 
         if not movie:
-            movie = {'movieid': row[0], 'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
+            movie = {'movieid': row[0], 'movietitle': movietitle, 'genres': [row[2]], "year": row[3]}
             continue
-        if row[1] == movie['movietitle']:
+        if movietitle == movie['movietitle']:
             movie['genres'].append(row[2])
         else:
             movie_genres.append(movie)
-            movie = {'movieid': row[0], 'movietitle': row[1], 'genres': [row[2]], "year": row[3]}
+            movie = {'movieid': row[0], 'movietitle': movietitle, 'genres': [row[2]], "year": row[3]}
     
     return movie_genres
 
