@@ -21,6 +21,15 @@ BEGIN
     SET totalamount = ROUND(netamount * (1 + tax/100), 2)
     WHERE totalamount IS NULL;
     RETURN NEW;
+
+    -- Actualizamos orderdetail
+    UPDATE orderdetail
+    SET price = ROUND(CAST(products.price - products.price * 0.01 * NEW.promo AS NUMERIC))
+    FROM customers, orders, products
+    WHERE orders.customerid = NEW.customerid
+    AND orders.orderid = orderdetail.orderid
+    AND orderdetail.prod_id = products.prod_id
+    AND orders.status IS NULL;
 END;
 $$ LANGUAGE plpgsql;
 
