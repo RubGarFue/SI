@@ -45,7 +45,6 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
     # - ir guardando trazas mediante dbr.append()
     
     try:
-        #TODO: meter el sleep somewhere
         db_conn = dbConnect()
         trans = beginTransaction(db_conn, bSQL)
         dbr.append("Comienza la transaccion")
@@ -66,6 +65,7 @@ def delCity(city, bFallo, bSQL, duerme, bCommit):
             # Orden correcto
             delOrderDetail(db_conn, city)
             dbr.append("Borrado en la tabla orderdetail con exito")
+            time.sleep(duerme)
             delOrder(db_conn, city)
             dbr.append("Borrado en la tabla orders con exito")
             delCustomer(db_conn, city)
